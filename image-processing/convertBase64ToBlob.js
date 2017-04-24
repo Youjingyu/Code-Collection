@@ -11,7 +11,7 @@ function convertBase64UrlToBlob(base64){
     }
     // 将base64解码
     var bytes = atob(base64);
-    var bytesCode =new ArrayBuffer(bytes.length);
+    var bytesCode = new ArrayBuffer(bytes.length);
     // 将base64转换为ascii码
     for (var i = 0; i < bytes.length; i++) {
         bytesCode[i] = bytes.charCodeAt(i);
