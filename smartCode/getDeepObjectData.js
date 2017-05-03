@@ -1,7 +1,7 @@
 /**
  * 获取深层数据结构中的数据
  * @param {Array} keyArr 查找数据所需key组成的数组
- * @param {Object} dataObject 旋转完成后的回调函数
+ * @param {Object} dataObject 数据对象
  */
 function getDeepObjectData(keyArr, dataObject) {
     return keyArr.reduce(function (data, key) {
