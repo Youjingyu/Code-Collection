@@ -1,1 +1,1 @@
-- http://www.ourd3js.com/wordpress/668/
+- 世界和主要国家地图信息json文件: http://www.ourd3js.com/wordpress/668/
