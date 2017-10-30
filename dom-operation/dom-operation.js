@@ -61,6 +61,8 @@
                 this[eventCache][target_sel] = callback;
                 this.addEventListener(type, function (event) {
                     var target = event.target;
+                    // bug/feature: if the parent node/target was removed from dom tree,
+                    // traversal will break
                     while(target){
                         // traverse all cached event callback function in the agent elment,
                         // and check whether the target matches the key(ie selector)
