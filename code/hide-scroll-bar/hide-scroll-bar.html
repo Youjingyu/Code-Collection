@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>隐藏浏览器滚动条</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Chrome */
+        body::-webkit-scrollbar{
+            display: none;
+        }
+        /* IE/Edge */
+        body{
+            -ms-overflow-style: none;
+        }
+        /* Firfox */
+        html{
+            overflow: -moz-hidden-unscrollable; /* 这里如果只设置hidden，会影响chrome的其他hidden */
+            height: 100%;
+        }
+        body{
+            height: 100%;
+            width: calc(100vw + 18px); /* 18px为浏览器滚动条宽度 */
+            overflow: auto;
+        }
+        #div1, #div2{
+            width: 100vw; /* Firefox还要将内容宽度设为100vw */
+        }
+    </style>
+</head>
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+</body>
+</html>
