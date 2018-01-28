@@ -1,7 +1,7 @@
 ### elasticsearch查询、存储、聚合、计数、排序
 npm 有elasticsearch的包，可以用于与es服务器交互，但也可以手动调用es的result api  
-我主要用到了查询和以及聚合，两者并列关系，可以结合使用。es中字符串数据默认是会分词的，在保存数据之前，必须使用mapping type设置每个字段的数据类型、以及禁用分词。
-- 查询
+我主要用到了查询和以及聚合，两者是并列关系，可以结合使用。es中字符串数据默认是会分词的，因此在保存数据之前，必须使用mapping type设置每个字段的数据类型、以及禁用分词。
+- 查询  
 es可以使用查询表达式，参考文档https://www.elastic.co/guide/cn/elasticsearch/guide/current/query-dsl-intro.html
 ```javascript
 request({

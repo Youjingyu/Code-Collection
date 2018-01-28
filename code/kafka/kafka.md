@@ -1,4 +1,5 @@
-### 使用node-kafka链接kafka服务器
+### 使用node-kafka链接kafka服务器 
+node-kafka编译安装过程遇到的问题参考：https://github.com/Youjingyu/problem-summary
 ```javascript
 const Kafka = require('node-rdkafka');
 // topicid、groupid、bootstrap.servers需要向kafka服务方确定
