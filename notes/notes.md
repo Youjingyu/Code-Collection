@@ -94,3 +94,5 @@ let intersect = new Set([...a].filter(x => b.has(x)));
 let difference = new Set([...a].filter(x => !b.has(x)));
 // Set {1}
 ```
+- 日志分析、大数据处理系统ELK：elasticsearch、logstash、kibana，对应的，新浪当前使用的elasticsearch、rsyslog、grafana
+- 大数据存储、查询、处理系统：kafka、spark、hadoop
