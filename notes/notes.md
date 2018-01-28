@@ -28,6 +28,7 @@ console.log('one');
 // two
 // three
 ```
+- Promise的保存不能被window.onerror捕获，而需要另外监听事件unhandledrejection
 - 数组和字符串都有Iterator接口
 ```javascript
 for(let a of [1, 2]){
