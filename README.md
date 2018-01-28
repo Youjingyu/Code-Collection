@@ -16,7 +16,7 @@
 - [网站相关](https://github.com/Youjingyu/Code-Collection/tree/master/code/website)
 ### 解决方案
 - [h5动画](https://github.com/Youjingyu/Code-Collection/tree/master/solution/H5-animation)
-- [性能优化](https://github.com/Youjingyu/Code-Collection/tree/master/solution/performance-optimization)
+- [性能优化](https://github.com/Youjingyu/Code-Collection/blob/master/solution/performance-optimization/performance-optimization.md)
 - [文件下载](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileDownload/fileDownload.md)
 - [文件上传](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileUpload/fileUpload.md)
 - [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
