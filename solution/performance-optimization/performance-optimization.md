@@ -36,6 +36,6 @@
 - 考虑框架选择
 
 #### 参考链接
-- https://mp.weixin.qq.com/s/g1hNWleW00ACQ5u1oU2_cQ
 - https://github.com/xitu/gold-miner/blob/master/TODO/front-end-performance-checklist-2018-1.md
 - https://www.smashingmagazine.com/2018/01/front-end-performance-checklist-2018-pdf-pages/
+- https://mp.weixin.qq.com/s/g1hNWleW00ACQ5u1oU2_cQ
