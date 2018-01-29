@@ -97,3 +97,4 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 ```
 - 日志分析、大数据处理系统ELK：elasticsearch、logstash、kibana，对应的，新浪当前使用的elasticsearch、rsyslog、grafana
 - 大数据存储、查询、处理系统：kafka、spark、hadoop
+- substr从指定位置开始截取指定长度。slice、substring指定开始和结束，截取。substring中参数为负会转为0，两个参数中，取小值为开始。slice中，若第一个参数等于大于第二个参数,则返回空字符串。
