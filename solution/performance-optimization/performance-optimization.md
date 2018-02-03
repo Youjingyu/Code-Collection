@@ -1,10 +1,10 @@
 ## 前端性能优化
 性能优化目标主要是让用户尽快看到页面内容、页面能够尽快对用户操作做出反馈。  
 所以主要关注下面几个指标
-- First Paint 白屏时间：浏览器从白屏到第一次视觉变化。
-- First Meaningful Paint 首次有效渲染：文字、图像和主要内容都已可见。
-- Visually Complete 视觉完整：视口中的所有内容都可见。
-- Time to Interactive 可交互时间：视口中的所有内容都可见，并且可以进行交互（JavaScript 主线程停止活动）。
+- First Paint 白屏时间：浏览器从白屏到第一次视觉变化。responseStart - navigationStart
+- First Meaningful Paint 首次有效渲染：文字、图像和主要内容都已可见。performance.getEntriesByType('paint')，兼容性不好。
+- Visually Complete 视觉完整：视口中的所有内容都可见。根据业务情况情况埋点，或者获取首屏所有图片loaded的时间
+- Time to Interactive 可交互时间：视口中的所有内容都可见，并且可以进行交互（JavaScript 主线程停止活动）。domInteractive - requestStart
 ### 资源优化
 - 主动缓存
 - 启用压
@@ -35,7 +35,10 @@
 - 实施代码分割
 - 考虑框架选择
 
+在上述优化的基础上，还可以通过chrome dev tools 分析资源加载、解析、执行顺序对关键指标的影响
+
 #### 参考链接
 - https://github.com/xitu/gold-miner/blob/master/TODO/front-end-performance-checklist-2018-1.md
 - https://www.smashingmagazine.com/2018/01/front-end-performance-checklist-2018-pdf-pages/
 - https://mp.weixin.qq.com/s/g1hNWleW00ACQ5u1oU2_cQ
+- https://developer.akamai.com/blog/2017/12/04/beware-performancetiming-dominteractive/
