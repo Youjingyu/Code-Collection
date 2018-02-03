@@ -97,3 +97,4 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 ```
 - 日志分析、大数据处理系统ELK：elasticsearch、logstash、kibana，对应的，新浪当前使用的elasticsearch、rsyslog、grafana
 - 大数据存储、查询、处理系统：kafka、spark、hadoop
+- 可以设置Strict-Transport-Security头，让浏览器直接重定向http到https，而不需要服务器重定向。早期，浏览器会一直存储Strict-Transport-Security的设置，用户不能清除；从而可以在一个页面中发起多个请求，通过请求中的Strict-Transport-Security值，可以组成一个010101010形式的二进制信息，从而实现永久地认识用户。但是，该bug已被修复，该header头会随着cookie一起清除。
