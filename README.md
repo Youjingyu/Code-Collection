@@ -25,6 +25,7 @@
 - [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
 - [获取网络信息](https://github.com/Youjingyu/Code-Collection/blob/master/solution/network-information/network-information.md)
 - [页面截图](https://github.com/Youjingyu/Code-Collection/blob/master/solution/screenshot/screenshot.md)
+- [基于贝叶斯推断的用户唯一性识别](https://github.com/Youjingyu/Code-Collection/blob/master/solution/bayesian/bayesian.md)
 
 ### 其他
 - [笔记](https://github.com/Youjingyu/Code-Collection/blob/master/notes/notes.md)
