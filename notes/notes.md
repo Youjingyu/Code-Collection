@@ -99,3 +99,8 @@ let difference = new Set([...a].filter(x => !b.has(x)));
 - 大数据存储、查询、处理系统：kafka、spark、hadoop
 - 可以设置Strict-Transport-Security头，让浏览器直接重定向http到https，而不需要服务器重定向。早期，浏览器会一直存储Strict-Transport-Security的设置，用户不能清除；从而可以在一个页面中发起多个请求，通过请求中的Strict-Transport-Security值，可以组成一个010101010形式的二进制信息，从而实现永久地认识用户。但是，该bug已被修复，该header头会随着cookie一起清除。
 - substr从指定位置开始截取指定长度。slice、substring指定开始和结束，截取。substring中参数为负会转为0，两个参数中，取小值为开始。slice中，若第一个参数等于大于第二个参数,则返回空字符串。
+- css对页面的阻塞情况
+  - css加载不会阻塞DOM树的解析
+  - css加载会阻塞DOM树的渲染
+  - css加载会阻塞后面js语句的执行，但不会阻塞js加载
+  - js会阻塞dom树解析、渲染，因此未解析的css link可能会被阻塞加载
