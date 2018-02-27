@@ -42,3 +42,4 @@
 - https://www.smashingmagazine.com/2018/01/front-end-performance-checklist-2018-pdf-pages/
 - https://mp.weixin.qq.com/s/g1hNWleW00ACQ5u1oU2_cQ
 - https://developer.akamai.com/blog/2017/12/04/beware-performancetiming-dominteractive/
+- https://juejin.im/post/5a5ed5f3f265da3e261bfb94
