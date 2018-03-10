@@ -18,7 +18,7 @@
 - [h5唤醒app](https://github.com/Youjingyu/Code-Collection/tree/master/code/wakeUpApp)
 - [微信相关](https://github.com/Youjingyu/Code-Collection/tree/master/code/weChat)
 - [网站相关](https://github.com/Youjingyu/Code-Collection/tree/master/code/website)
-- [图片转base64](https://github.com/Youjingyu/Code-Collection/blob/master/img-to-base64/img-to-base64.js)
+- [图片转base64](https://github.com/Youjingyu/Code-Collection/blob/master/code/img-to-base64/img-to-base64.js)
 ### 解决方案
 - [h5动画](https://github.com/Youjingyu/Code-Collection/tree/master/solution/H5-animation)
 - [性能优化](https://github.com/Youjingyu/Code-Collection/blob/master/solution/performance-optimization/performance-optimization.md)
