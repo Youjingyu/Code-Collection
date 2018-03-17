@@ -44,3 +44,4 @@
 - https://developer.akamai.com/blog/2017/12/04/beware-performancetiming-dominteractive/
 - https://juejin.im/post/5a5ed5f3f265da3e261bfb94
 - https://fed.renren.com/2017/10/29/chrome-fetch-resource/
+- https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp
