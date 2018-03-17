@@ -43,3 +43,4 @@
 - https://mp.weixin.qq.com/s/g1hNWleW00ACQ5u1oU2_cQ
 - https://developer.akamai.com/blog/2017/12/04/beware-performancetiming-dominteractive/
 - https://juejin.im/post/5a5ed5f3f265da3e261bfb94
+- https://fed.renren.com/2017/10/29/chrome-fetch-resource/
