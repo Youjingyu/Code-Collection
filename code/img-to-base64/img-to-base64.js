@@ -28,14 +28,15 @@ function basedOnAjaxArrayBuffer(url, cb) {
     if (xhr.status === 200) {
       // 将响应数据放入blobBuilder中
       blobBuilder.append(xhr.response);
+      const resType = xhr.getResponseHeader('content-type');
       // 用文件类型创建blob对象
-      blob = blobBuilder.getBlob("image/png");
+      blob = blobBuilder.getBlob(resType);
+      // 转为字符串
+      fileReader.readAsDataURL(blob);
       fileReader.onload = (evt)=>{
         var result = evt.target.result;
         cb && cb(result);
       };
-      // 转为字符串
-      fileReader.readAsDataURL(blob);
     }
   });
   xhr.send();
