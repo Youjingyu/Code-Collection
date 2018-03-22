@@ -2,6 +2,9 @@
 ```bash
 ssh-keygen -t rsa -C "github邮箱"
 ssh-keygen -t rsa -C "公司gitlab邮箱"
+```
+生成密匙，不要输入密码，否则每次pull、push都需要密码
+```bash
 ssh-add ~/.ssh/github_rsa
 ssh-add ~/.ssh/gitlab_rsa
 // 复制公匙到github和gitlab
