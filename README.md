@@ -29,6 +29,7 @@
 - [页面截图](https://github.com/Youjingyu/Code-Collection/blob/master/solution/screenshot/screenshot.md)
 - [基于贝叶斯推断的用户唯一性识别](https://github.com/Youjingyu/Code-Collection/blob/master/solution/bayesian/bayesian.md)
 - [动态插入js并按顺序执行](https://github.com/Youjingyu/Code-Collection/blob/master/solution/dynamic-insert-js/dynamic-insert-js.md)
+- [Linux定时邮件](https://github.com/Youjingyu/Code-Collection/blob/master/solution/linux-send-mail/linux-send-mail.md)
 
 ### 其他
 - [笔记](https://github.com/Youjingyu/Code-Collection/blob/master/notes/notes.md)
