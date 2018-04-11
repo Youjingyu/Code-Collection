@@ -38,4 +38,9 @@ ln file copyfile
 chkconfig
 // 就是查看文件里有多少行
  wc -l filename
+// 从服务器下载文件（rsync -r处理文件夹，客户端和服务端都需要安装rsync）
+rsync username@serverIp:serverFilePath localFileName
+// 上传文件到服务器
+rsync localFileName username@serverIp:serverFilePath
+
 ```
