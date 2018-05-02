@@ -43,5 +43,6 @@ chkconfig
 rsync username@serverIp:serverFilePath localFileName
 // 上传文件到服务器
 rsync localFileName username@serverIp:serverFilePath
-
+// 查看进程详细信息
+ll /proc/进程pid
 ```
