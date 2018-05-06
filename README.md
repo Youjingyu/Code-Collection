@@ -31,6 +31,8 @@
 - [动态插入js并按顺序执行](https://github.com/Youjingyu/Code-Collection/blob/master/solution/dynamic-insert-js/dynamic-insert-js.md)
 - [Linux定时邮件](https://github.com/Youjingyu/Code-Collection/blob/master/solution/linux-send-mail/linux-send-mail.md)
 
+### 读书笔记
+- [编写可读代码的艺术](https://github.com/Youjingyu/Code-Collection/blob/master/notes/readding-notes/编写可读代码的艺术.md)
 ### 其他
 - [笔记](https://github.com/Youjingyu/Code-Collection/blob/master/notes/notes.md)
 - [windows利用vpn远程访问](https://github.com/Youjingyu/Code-Collection/tree/master/system)
