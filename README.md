@@ -1,4 +1,5 @@
 # Code-Collection
+- 个人博客：[ 前端杂货铺](https://segmentfault.com/blog/whale)
 - 收藏的代码片段
 - 问题的解决方案
 - 古怪问题汇总
