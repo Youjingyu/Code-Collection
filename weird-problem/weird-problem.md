@@ -282,3 +282,31 @@ resolve: {
 ```
 ln -s执行软连接时，需要在源文件的目录执行该命令，不然在目标目录cd找不到文件夹。如果仍报错：Too many levels of symbolic links，源文件和目标文件都需要使用绝对路径。
 - vscode会优先使用本地安装的eslint，如果使用的本地eslint，eslint只会在本地node_modules里查找eslint-plugin，全局安装的eslint-plugin不起作用
+- 在linux下按照下面方式安装nodejs：
+```bash
+curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+sudo yum -y install nodejs
+```
+安装的确实0.10版本，怀疑是由于网路问题，curl并没有下载成功，从而可以转为而二进制文件安装：  
+到https://nodejs.org/zh-cn/download/选择linux下的二进制文件下载链接，比如我选择的linux-x64：
+```bash
+wget https://nodejs.org/dist/v8.11.2/node-v8.11.2-linux-x64.tar.xz
+```
+解压：
+```bash
+sudo mkdir /usr/local/lib/nodejs
+sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs 
+sudo mv /usr/local/lib/nodejs/node-$VERSION-$DISTRO /usr/local/lib/nodejs/node-$VERSION
+```
+配置环境变量```vi /etc/profile```：
+```bash
+# Nodejs
+export NODEJS_HOME=/usr/local/lib/nodejs/node-$VERSION/bin
+export PATH=$NODEJS_HOME:$PATH
+```
+刷新profile：```source /etc/profile```  
+验证是否安装成功：
+```bash
+node -v
+npm -v
+```
