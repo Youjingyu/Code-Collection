@@ -8,3 +8,9 @@ export CLASSPATH=$JMETER_HOME/lib/ext/ApacheJMeter_core.jar:$JMETER_HOME/lib/jor
 # bin目录
 export PATH=$JMETER_HOME/bin:$PATH:$HOME/bin
 ```
+然后刷新profile：
+```bash
+source /etc/profile
+# 或
+source /etc/profile
+```
