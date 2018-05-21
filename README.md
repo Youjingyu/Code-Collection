@@ -1,6 +1,7 @@
 # Code-Collection
-收藏的前端代码，包括常见图片处理、富文本编辑器处理等  
-问题的解决方案
+- 收藏的代码片段
+- 问题的解决方案
+- 古怪问题汇总
 ### 代码
 - [绘制平滑的canvas曲线](https://github.com/Youjingyu/Code-Collection/tree/master/code/canvas-smooth-curve)
 - [图片预处理](https://github.com/Youjingyu/Code-Collection/tree/master/code/image-processing)
@@ -30,6 +31,8 @@
 - [基于贝叶斯推断的用户唯一性识别](https://github.com/Youjingyu/Code-Collection/blob/master/solution/bayesian/bayesian.md)
 - [动态插入js并按顺序执行](https://github.com/Youjingyu/Code-Collection/blob/master/solution/dynamic-insert-js/dynamic-insert-js.md)
 - [Linux定时邮件](https://github.com/Youjingyu/Code-Collection/blob/master/solution/linux-send-mail/linux-send-mail.md)
+### 古怪问题
+- [古怪问题汇总](https://github.com/Youjingyu/Code-Collection/blob/master/weird-problem/weird-problem.md)
 
 ### 读书笔记
 - [编写可读代码的艺术](https://github.com/Youjingyu/Code-Collection/blob/master/notes/readding-notes/编写可读代码的艺术.md)
