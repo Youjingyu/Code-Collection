@@ -1,9 +1,9 @@
 # Code-Collection
-- 个人博客：[ 前端杂货铺](https://segmentfault.com/blog/whale)
-- 收藏的代码片段
+- 个人博客：[前端杂货铺](https://segmentfault.com/blog/whale)
+- 代码片段
 - 问题的解决方案
 - 古怪问题汇总
-### 代码
+### 代码片段
 - [绘制平滑的canvas曲线](https://github.com/Youjingyu/Code-Collection/tree/master/code/canvas-smooth-curve)
 - [图片预处理](https://github.com/Youjingyu/Code-Collection/tree/master/code/image-processing)
 - [dom操作](https://github.com/Youjingyu/Code-Collection/tree/master/code/dom-operation)
