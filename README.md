@@ -1,10 +1,25 @@
 # Code-Collection
 - 个人博客：[前端杂货铺](https://segmentfault.com/blog/whale)
-- 代码片段
-- 问题的解决方案
-- 古怪问题汇总
+- [问题的解决方案](#解决方案)
+- [古怪问题汇总](#古怪问题)
+- [代码片段](#代码片段)
+
+### 解决方案
+- [h5动画](https://github.com/Youjingyu/Code-Collection/tree/master/solution/H5-animation)
+- [性能优化](https://github.com/Youjingyu/Code-Collection/blob/master/solution/performance-optimization/performance-optimization.md)
+- [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
+- [获取网络信息](https://github.com/Youjingyu/Code-Collection/blob/master/solution/network-information/network-information.md)
+- [页面截图](https://github.com/Youjingyu/Code-Collection/blob/master/solution/screenshot/screenshot.md)
+- [基于贝叶斯推断的用户唯一性识别](https://github.com/Youjingyu/Code-Collection/blob/master/solution/bayesian/bayesian.md)
+- [动态插入js并按顺序执行](https://github.com/Youjingyu/Code-Collection/blob/master/solution/dynamic-insert-js/dynamic-insert-js.md)
+- [Linux定时邮件](https://github.com/Youjingyu/Code-Collection/blob/master/solution/linux-send-mail/linux-send-mail.md)
+- [文件下载](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileDownload/fileDownload.md)
+- [文件上传](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileUpload/fileUpload.md)
+
+### 古怪问题
+- [古怪问题汇总](https://github.com/Youjingyu/Code-Collection/blob/master/weird-problem/weird-problem.md)
+
 ### 代码片段
-- [绘制平滑的canvas曲线](https://github.com/Youjingyu/Code-Collection/tree/master/code/canvas-smooth-curve)
 - [图片预处理](https://github.com/Youjingyu/Code-Collection/tree/master/code/image-processing)
 - [dom操作](https://github.com/Youjingyu/Code-Collection/tree/master/code/dom-operation)
 - [gulp配置](https://github.com/Youjingyu/Code-Collection/tree/master/code/gulp-config)
@@ -21,22 +36,11 @@
 - [微信相关](https://github.com/Youjingyu/Code-Collection/tree/master/code/weChat)
 - [网站相关](https://github.com/Youjingyu/Code-Collection/tree/master/code/website)
 - [图片转base64](https://github.com/Youjingyu/Code-Collection/blob/master/code/img-to-base64/img-to-base64.js)
-### 解决方案
-- [h5动画](https://github.com/Youjingyu/Code-Collection/tree/master/solution/H5-animation)
-- [性能优化](https://github.com/Youjingyu/Code-Collection/blob/master/solution/performance-optimization/performance-optimization.md)
-- [文件下载](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileDownload/fileDownload.md)
-- [文件上传](https://github.com/Youjingyu/Code-Collection/blob/master/solution/fileUpload/fileUpload.md)
-- [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
-- [获取网络信息](https://github.com/Youjingyu/Code-Collection/blob/master/solution/network-information/network-information.md)
-- [页面截图](https://github.com/Youjingyu/Code-Collection/blob/master/solution/screenshot/screenshot.md)
-- [基于贝叶斯推断的用户唯一性识别](https://github.com/Youjingyu/Code-Collection/blob/master/solution/bayesian/bayesian.md)
-- [动态插入js并按顺序执行](https://github.com/Youjingyu/Code-Collection/blob/master/solution/dynamic-insert-js/dynamic-insert-js.md)
-- [Linux定时邮件](https://github.com/Youjingyu/Code-Collection/blob/master/solution/linux-send-mail/linux-send-mail.md)
-### 古怪问题
-- [古怪问题汇总](https://github.com/Youjingyu/Code-Collection/blob/master/weird-problem/weird-problem.md)
+- [绘制平滑的canvas曲线](https://github.com/Youjingyu/Code-Collection/tree/master/code/canvas-smooth-curve)
 
 ### 读书笔记
 - [编写可读代码的艺术](https://github.com/Youjingyu/Code-Collection/blob/master/notes/readding-notes/编写可读代码的艺术.md)
+
 ### 其他
 - [笔记](https://github.com/Youjingyu/Code-Collection/blob/master/notes/notes.md)
 - [windows利用vpn远程访问](https://github.com/Youjingyu/Code-Collection/tree/master/system)
