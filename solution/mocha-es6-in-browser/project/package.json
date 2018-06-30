@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "version": "0.0.1",
+  "main": "lib/index.cjs.js",
+  "module": "src/index.js",
+  "scripts": {
+    "test": "webpack-dev-server --config ./test/webpack.config.js --hot"
+  },
+  "devDependencies": {
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  }
+}
