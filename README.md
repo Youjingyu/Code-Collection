@@ -7,6 +7,7 @@
 ### 解决方案
 - [h5动画](https://github.com/Youjingyu/Code-Collection/tree/master/solution/H5-animation)
 - [性能优化](https://github.com/Youjingyu/Code-Collection/blob/master/solution/performance-optimization/performance-optimization.md)
+- [mocha在浏览器中测试es6代码](https://github.com/Youjingyu/Code-Collection/blob/master/solution/mocha-es6-in-browser/project
 - [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
 - [获取网络信息](https://github.com/Youjingyu/Code-Collection/blob/master/solution/network-information/network-information.md)
 - [页面截图](https://github.com/Youjingyu/Code-Collection/blob/master/solution/screenshot/screenshot.md)
