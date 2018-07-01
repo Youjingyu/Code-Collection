@@ -44,7 +44,7 @@
                     });
                 });
             });
-        });  
+        });
   ```
 - ios下上传图片，本地预览是正确显示的，上传到服务器后，页面再把图片请求回来显示，可能因为图片orientation值的不同导致图片是倒置的。解决代码[将图片旋转到正确的角度](https://github.com/Youjingyu/Code-Collection/blob/master/image-processing/resetImgOrientation.js)
 - outline不能单独设置某一边，可以用css3的box-shadow模拟，也可以用下面代码hack：
@@ -54,7 +54,7 @@
            display: block;
            padding: 2px 0;
            line-height: 1px;
-           border-top: 1px dashed #000; 
+           border-top: 1px dashed #000;
          }
 ```
 - 只有a、button、input类标签才有blur、focus时间，希望其他元素有这两个事件，需要在元素上添加tabindex（有兼容性问题），其值在0到32767之间，数字代表被tab键遍历到的顺序，0代表不会被表遍历到。
@@ -151,8 +151,8 @@ let Report = ( supperclass ) => class extends supperclass {
 }
 new (Report(superReport))();
 ```
-如果superReport来自node_modules，会报错，否则不会报错。  
-这是由es6 class的运行机制导致，可以修改babel的配置为```"presets": [ "es2015-node5" ]```解决  
+如果superReport来自node_modules，会报错，否则不会报错。
+这是由es6 class的运行机制导致，可以修改babel的配置为```"presets": [ "es2015-node5" ]```解决
 参考https://github.com/babel/babel/issues/4269
 - vmware安装centos，选择配置系统iso后，开机依然system not found：在设置 -> CD/DVD -> 开启启动时连接。
 - vmware安装centos过程中，f12为确定并到下一屏，相当于next
@@ -182,10 +182,10 @@ echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/profile
 source /etc/profile
 ```
 - 安装node-rdkafka报错
-```bash 
+```bash
 unrecognized command line option -std=c++11
 // 升级gcc即可：https://www.quyu.net/info/628.html
-// 升级过程中继续报错 
+// 升级过程中继续报错
 // make[1]: *** [all-stage1-gcc] Error 2
 // make[1]: *** [stage1-bubble] Error 2
 // 首先保证有10G硬盘、1G内存、1G Swap分区，swap分许可以开启临时的http://smilejay.com/2012/09/new-or-add-swap/
@@ -227,7 +227,7 @@ exec('elasticdump data=\'{"test": "www"}\'');
 // 如果在某环境中依然报错，使用shelljs执行shelljs.exec
 ```
 - 页面onload事件触发时机较晚，甚至不触发
-对于有延迟加载资源的页面、或者页面内容较多（如大量图片）、或者页面是长列表型，导致浏览器一直在加载资源，从而阻塞onload事件；如果，用户在页面加载过程中，将浏览器后台运行，这时浏览器可能会挂起，也不会触发onload事件。从而，放到onload回调里的数据收集函数不被触发。而且，经观察，onload在新浪网这种图片多、列表长的页面来说，onload不触发的概率比较大。  
+对于有延迟加载资源的页面、或者页面内容较多（如大量图片）、或者页面是长列表型，导致浏览器一直在加载资源，从而阻塞onload事件；如果，用户在页面加载过程中，将浏览器后台运行，这时浏览器可能会挂起，也不会触发onload事件。从而，放到onload回调里的数据收集函数不被触发。而且，经观察，onload在新浪网这种图片多、列表长的页面来说，onload不触发的概率比较大。
 可以使用settimeout兜底来解决，比如3s后直接执行onload回调函数，不再等待onload。
 - npm adduser，用户名、密码正确，仍旧提示错误。可能是使用了非官方npm源（如淘宝的源），需要切换回官方源：
 ```bash
@@ -249,7 +249,7 @@ IOS：设置 —> 通用 —> 关于本机 —> 受信任证书存储区，找�
 ANDROID：设置 —> 安全 —> 从手机存储安装，找到需要安装的证书，安装即可。
 - cnpm link只能link用cnpm install的工程，如果工程师yarn安装的，用cnpm link 报错：
 ```bash
-npm WARN checkPermissions Missing write access to 
+npm WARN checkPermissions Missing write access to
 ```
 - cnpm link的时候回安装工程，不要先安装再link，安装后会导致link文件过多，报错Maximum call stack size exceeded
 - windows下修改问价权限
@@ -267,12 +267,12 @@ git rm --cached filename
 git rm -r --cached directory
 ```
 删除后commit删除操作就行了
-- elasticsearch aggregation查询报错：   
-Scripts of type [inline], operation [aggs] and lang [groovy] are disabled   
-因为没有在/etc/elasticsearch/elasticsearch.yml中配置  
+- elasticsearch aggregation查询报错：
+Scripts of type [inline], operation [aggs] and lang [groovy] are disabled
+因为没有在/etc/elasticsearch/elasticsearch.yml中配置
 script.inline: true
 script.indexed: true
-如果配置了还报错，可能是节点集群中的子机器没有配置  
+如果配置了还报错，可能是节点集群中的子机器没有配置
 配置子节点后，重启，需要注意，子节点重启后母节点也要重启才能连接到子节点
 - webpack编译软连接的文件报错：找不到模块
 ```javascript
@@ -287,7 +287,7 @@ ln -s执行软连接时，需要在源文件的目录执行该命令，不然在
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 sudo yum -y install nodejs
 ```
-怀疑是由于网路问题，curl并没有下载成功，从而可以转为而二进制文件安装：  
+怀疑是由于网路问题，curl并没有下载成功，从而可以转为而二进制文件安装：
 到https://nodejs.org/zh-cn/download/ 选择linux下的二进制文件下载链接，比如我选择的linux-x64：
 ```bash
 wget https://nodejs.org/dist/v8.11.2/node-v8.11.2-linux-x64.tar.xz
@@ -295,7 +295,7 @@ wget https://nodejs.org/dist/v8.11.2/node-v8.11.2-linux-x64.tar.xz
 解压：
 ```bash
 sudo mkdir /usr/local/lib/nodejs
-sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs 
+sudo tar -xJvf node-$VERSION-$DISTRO.tar.xz -C /usr/local/lib/nodejs
 sudo mv /usr/local/lib/nodejs/node-$VERSION-$DISTRO /usr/local/lib/nodejs/node-$VERSION
 ```
 配置环境变量```vi /etc/profile```：
@@ -304,9 +304,15 @@ sudo mv /usr/local/lib/nodejs/node-$VERSION-$DISTRO /usr/local/lib/nodejs/node-$
 export NODEJS_HOME=/usr/local/lib/nodejs/node-$VERSION/bin
 export PATH=$NODEJS_HOME:$PATH
 ```
-刷新profile：```source /etc/profile```  
+刷新profile：```source /etc/profile```
 验证是否安装成功：
 ```bash
 node -v
 npm -v
+```
+- 小程序中文本标签中换行，会一并渲染到视图中，如下面的写法，会渲染出两个换行：
+```html
+<text>
+    测试文本
+</text>
 ```
