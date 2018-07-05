@@ -8,10 +8,10 @@ ssh-keygen -t rsa -C "公司gitlab邮箱"
 ssh-add ~/.ssh/github_rsa
 ssh-add ~/.ssh/gitlab_rsa
 // 复制公匙到github和gitlab
-cat github_rsa.pub
-cat gitlab_rsa.pub
+cat ~/.ssh/github_rsa.pub
+cat ~/.ssh/gitlab_rsa.pub
 ```
-添加config文件
+添加config文件，```vi ~/.ssh/config```，输入如下内容
 ```bash
 #github
 Host github.com
