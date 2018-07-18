@@ -1,7 +1,7 @@
 const doc = document
 
 export default {
-  set(val) {
+  set (val) {
     const input = doc.createElement('input')
     input.setAttribute('readonly', 'readonly')
     input.setAttribute('value', val)
