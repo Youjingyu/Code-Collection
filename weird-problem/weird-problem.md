@@ -316,3 +316,17 @@ npm -v
     测试文本
 </text>
 ```
+- JSON.stringify的问题
+```JavaScript
+// js对象序列化存入数据库，再请求回来可能parse失败
+// 比如
+JSON.stringify({'id("_test")': 123}) // 将结果'{"id(\"_test\")":123}'存入数据库
+// parse失败
+JSON.parse('{"id(\"_test\")":123}') // error
+```
+猜测原因是JSON编码与js编码并不完全一致  
+一种解决方式是，在stringify之前，将js对象key中的双引号替换为单引号：```{'id("_test")': 123}```→```{"id('_test')": 123}```  
+另种是在parse之前替换双引号为单引号:
+```JavaScript
+jsonString = jsonString.replace(/({|,)("(.*?)"\:)/ig,function($1,$2,$3,$4){return $2 + '"' + $4.replace(/"/g,"'") + '":'})
+```
