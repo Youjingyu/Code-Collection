@@ -331,3 +331,4 @@ JSON.parse('{"id(\"_test\")":123}') // error
 jsonString = jsonString.replace(/({|,)("(.*?)"\:)/ig,function($1,$2,$3,$4){return $2 + '"' + $4.replace(/"/g,"'") + '":'})
 ```
 - 在ajax、onload等回调中，document.execCommand('copy')方法不会生效。该方法只对受信任的用户操作有效，比如click、mouseup等操作。参考[stackoverflow](https://stackoverflow.com/questions/31925944/execcommandcopy-does-not-work-in-ajax-xhr-callback)、[allowed-to-show-a-popup](https://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup)
+- 腾讯云主机，nginx配置了https后，https依然不能访问，实际没有监听443端口。貌似是，腾讯云主机貌似禁止了，以自建的ssl证书启动https服务器。从腾讯云申请免费的证书后，启动成功。
