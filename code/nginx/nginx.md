@@ -60,8 +60,13 @@ server {
     #charset koi8-r;
     # access_log  /var/log/nginx/host.access.log  main;
 
-    location / {
+    location /repos/ {
       proxy_pass https://api.github.com;
+      rewrite ^(.*)$ $1?client_id=xxxx&xxxxx break;
+    }
+    location /myraw/ {
+      proxy_pass https://raw.githubusercontent.com;
+      rewrite /myraw/(.*) /$1  break;
     }
 
     #error_page  404              /404.html;
