@@ -332,3 +332,9 @@ jsonString = jsonString.replace(/({|,)("(.*?)"\:)/ig,function($1,$2,$3,$4){retur
 ```
 - 在ajax、onload等回调中，document.execCommand('copy')方法不会生效。该方法只对受信任的用户操作有效，比如click、mouseup等操作。参考[stackoverflow](https://stackoverflow.com/questions/31925944/execcommandcopy-does-not-work-in-ajax-xhr-callback)、[allowed-to-show-a-popup](https://www.w3.org/TR/html5/browsers.html#allowed-to-show-a-popup)
 - 腾讯云主机，nginx配置了https后，https依然不能访问，实际没有监听443端口。貌似是，腾讯云主机貌似禁止了，以自建的ssl证书启动https服务器。从腾讯云申请免费的证书后，启动成功。
+- 微信小程序
+  - 如果使用ts开发小程序，会有一些古怪问题。比如在页面json中出现```useComponents```字段，会导致页面的生命周期函数不执行
+  - 使用自定义组件递归实现树结构时，会报错VM13421:2 Error: Expect FLOW_MINIPULATE_CHILD but get another，但在手机上预览却能正常显示
+  - 由于小程序没有computed，父组件传递的数据，需要在子组件进一步处理时，需要借助Object.defineProperty定义setter监听父组件数据的变化，但是不能监听数据类型的数据，否则js代码会中断执行，并且没有报错提示。一种间接的处理方式是，新建一个整型数据，跟随数组一起变化，监听该数据间接监听数据变化。
+  - 递归组件触发事件，只能一级一级往外传，并且要在该递归组件中监听该事件，才能往外传
+  - 
