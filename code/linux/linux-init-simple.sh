@@ -23,14 +23,14 @@ function success(){
 [ `whoami` != "root" ] && echo "please use root exec this file" && exit 1
 
 #更新yum为阿里云的源
-# echo "set yum mirrirs with aliyun"
-# cd /etc/yum.repos.d/
-# mv CentOS-Base.repo CentOS-Base.repo.bak
-# wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
-# wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
-# yum clean all
-# yum makecache
-# success
+echo "set yum mirrirs with aliyun"
+cd /etc/yum.repos.d/
+mv CentOS-Base.repo CentOS-Base.repo.bak
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo
+wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-6.repo
+yum clean all
+yum makecache
+success
 
 #安装中文
 # echo "install pingfang ttc"
