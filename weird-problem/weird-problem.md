@@ -184,23 +184,27 @@ source /etc/profile
 - 安装node-rdkafka报错
 ```bash
 unrecognized command line option -std=c++11
-// 升级gcc即可：https://www.quyu.net/info/628.html
-// 升级过程中继续报错
+# 升级gcc即可：https://www.quyu.net/info/628.html
+# 升级过程中继续报错
 // make[1]: *** [all-stage1-gcc] Error 2
 // make[1]: *** [stage1-bubble] Error 2
-// 首先保证有10G硬盘、1G内存、1G Swap分区，swap分许可以开启临时的http://smilejay.com/2012/09/new-or-add-swap/
-// 如果需要swap分区持久生效，需要配置swap分区的开机启动/dev/sdb2 swap swap defaults 0 0
-// 保证上述要求仍然报相同的错，可以尝试安装yum install gcc-c++ 、libgcc.i686等
-升级成功后，可能依然会报错unrecognized command line option -std=c++11
-// 可能是g++没有升级或者编译时调用的是低版本的g++
-// 我这里是/usr/bin/g++ -v 版本为4.4.7，而/usr/local/bin/g++ -v 版本为6.3.0
-// 显然是编译时调用了/usr/bin/g++
-// 将老的g++版本移动到/usr/bin/g++4.4.7
+# 首先保证有10G硬盘、1G内存、1G Swap分区，swap分许可以开启临时的http://smilejay.com/2012/09/new-or-add-swap/
+# 如果需要swap分区持久生效，需要配置swap分区的开机启动/dev/sdb2 swap swap defaults 0 0
+# 保证上述要求仍然报相同的错，可以尝试安装yum install gcc-c++ 、libgcc.i686等
+# 如果报错 gmp.h can't be found, or is unusable
+yum install gmp-devel
+# mpc.h: No such file or directory
+yum install libmpc-dev
+# 升级成功后，可能依然会报错unrecognized command line option -std=c++11
+# 可能是g++没有升级或者编译时调用的是低版本的g++
+# 我这里是/usr/bin/g++ -v 版本为4.4.7，而/usr/local/bin/g++ -v 版本为6.3.0
+# 显然是编译时调用了/usr/bin/g++
+# 将老的g++版本移动到/usr/bin/g++4.4.7
 mv /usr/bin/g++ /usr/bin/g++4.4.7
-// 建立新版本g++在/usr/bin目录下的软链
+# 建立新版本g++在/usr/bin目录下的软链
 ln -s /usr/local/bin/g++ /usr/bin/g++
-// 同时gcc、cc, c++可能也有这个情况，解决方法相同
-// 参考http://blog.csdn.net/u012973744/article/details/36197937
+# 同时gcc、cc, c++可能也有这个情况，解决方法相同
+# 参考http://blog.csdn.net/u012973744/article/details/36197937
 ```
 - 调用node-rdkafka时报错
 ```bash
@@ -208,6 +212,15 @@ libstdc++.so.6 version glibcxx_3.4.21' not found
 // 因为升级gcc时，生成的动态库没有替换老版本gcc的动态库。
 // 重建默认库的软连接即可：https://itbilu.com/linux/management/NymXRUieg.html
 // 注意修改libstdc++.so.6.0.21版本，该文章中的是libstdc++.so.6.0.21，所有用到的地方都要修改为find / -name "libstdc++.so*"命令输出的版本
+```
+- 针对上面的node-kafka报错，最简单的解决方式是一键升级GCC：
+```bash
+sudo yum install centos-release-scl
+sudo yum install devtoolset-7-gcc*
+scl enable devtoolset-7 bash
+which gcc
+source /opt/rh/devtoolset-7/enable 
+gcc --version
 ```
 - nodejs使用exec执行系统命令，参数中的双引号会被去掉
 ```javascript
