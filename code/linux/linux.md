@@ -46,3 +46,10 @@ rsync localFileName username@serverIp:serverFilePath
 // 查看进程详细信息
 ll /proc/进程pid
 ```
+- centos 7开启端口
+```bash
+firewall-cmd --list-all
+firewall-cmd --zone=public --add-port=80/tcp --permanent
+firewall-cmd --zone=public --add-port=443 /tcp --permanent
+firewall-cmd --reload
+```
