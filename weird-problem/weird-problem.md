@@ -181,7 +181,7 @@ make prefix=/usr/local/git install
 echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/profile
 source /etc/profile
 ```
-- 安装node-rdkafka报错
+- centos编译安装node-rdkafka报错
 ```bash
 unrecognized command line option -std=c++11
 # 升级gcc即可：https://www.quyu.net/info/628.html
@@ -206,14 +206,14 @@ ln -s /usr/local/bin/g++ /usr/bin/g++
 # 同时gcc、cc, c++可能也有这个情况，解决方法相同
 # 参考http://blog.csdn.net/u012973744/article/details/36197937
 ```
-- 调用node-rdkafka时报错
+调用node-rdkafka时继续报错
 ```bash
 libstdc++.so.6 version glibcxx_3.4.21' not found
 // 因为升级gcc时，生成的动态库没有替换老版本gcc的动态库。
 // 重建默认库的软连接即可：https://itbilu.com/linux/management/NymXRUieg.html
 // 注意修改libstdc++.so.6.0.21版本，该文章中的是libstdc++.so.6.0.21，所有用到的地方都要修改为find / -name "libstdc++.so*"命令输出的版本
 ```
-- 针对上面的node-kafka报错，最简单的解决方式是一键升级GCC：
+- 针对上面的centos node-kafka报错，最简单的解决方式是一键升级GCC：
 ```bash
 sudo yum install centos-release-scl
 sudo yum install devtoolset-7-gcc*
@@ -221,6 +221,16 @@ scl enable devtoolset-7 bash
 which gcc
 source /opt/rh/devtoolset-7/enable 
 gcc --version
+```
+- mac编译安装node-kafka时报错
+```bash
+ld: symbol(s) not found for architecture x86_64
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+```
+安装时添加命令行参数解决
+```bash
+CPPFLAGS=-I/usr/local/opt/openssl/include LDFLAGS=-L/usr/local/opt/openssl/lib npm install
+# 参考 https://github.com/Blizzard/node-rdkafka/issues/373
 ```
 - nodejs使用exec执行系统命令，参数中的双引号会被去掉
 ```javascript
