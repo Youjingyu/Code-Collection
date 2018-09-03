@@ -21,3 +21,15 @@ function pathResolve (root, path) {
   return rootArr.concat(pathArr).join('/')
 }
 ```
+- 获取对象的所有属性
+```javascript
+function getAllPropertyNames( obj ) {
+  var props = [];
+
+  do {
+      props= props.concat(Object.getOwnPropertyNames( obj ));
+  } while ( obj = Object.getPrototypeOf( obj ) );
+
+  return props;
+}
+```
