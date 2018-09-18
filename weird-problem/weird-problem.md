@@ -369,3 +369,7 @@ sudo chown -R elasticsearch:elasticsearch /var/run/elasticsearch
 sudo chown -R elasticsearch:elasticsearch /etc/elasticsearch
 sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
 ```
+- swiper和mint-ui的infinite scroll插件一起视使用，swiper的slide宽度非常大的问题：
+在swiper上添加width: 100%解决，貌似如果不加，会导致宽度计算错误
+- swiper和mint-ui的infinite scroll插件一起视使用，无限刷新事件不触发问题：
+在swiper的slide上添加overflow-y: auto，不要在infinite scroll的容器上加overflow-y: auto
