@@ -33,6 +33,18 @@ http {
     #配置会话超时时间
     ssl_session_timeout 10m;
     #gzip  on;
+    # 忽略原始服务器的cache响应头
+    proxy_ignore_headers X-Accel-Expires;
+    proxy_ignore_headers Expires;
+    proxy_ignore_headers Cache-Control;
+    # 缓存路径
+    proxy_cache_path /etc/nginx/cache/api levels=1:2 keys_zone=api_cache:10m max_size=5g inactive=6h use_temp_path=off;
+    proxy_cache_path /etc/nginx/cache/raw levels=1:2 keys_zone=raw_cache:10m max_size=5g inactive=6h use_temp_path=off;
+    # 不同状态码的缓存时间
+    # 与inactive配置是独立的，inactive代表文件从不被访问开始，保留的时间
+    # 如果一直被访问，则会一直保存
+    proxy_cache_valid 200 301 302 6h;
+    proxy_cache_valid any 5m;
 
     include /etc/nginx/conf.d/*.conf;
 }
@@ -61,10 +73,12 @@ server {
     # access_log  /var/log/nginx/host.access.log  main;
 
     location /repos/ {
+      proxy_cache raw_cache;
       proxy_pass https://api.github.com;
       rewrite ^(.*)$ $1?client_id=xxxx&xxxxx break;
     }
     location /myraw/ {
+      proxy_cache raw_cache;
       proxy_pass https://raw.githubusercontent.com;
       rewrite /myraw/(.*) /$1  break;
     }
