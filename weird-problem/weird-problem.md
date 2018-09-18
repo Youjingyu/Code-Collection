@@ -360,4 +360,12 @@ jsonString = jsonString.replace(/({|,)("(.*?)"\:)/ig,function($1,$2,$3,$4){retur
   - 使用自定义组件递归实现树结构时，会报错VM13421:2 Error: Expect FLOW_MINIPULATE_CHILD but get another，但在手机上预览却能正常显示
   - 由于小程序没有computed，父组件传递的数据，需要在子组件进一步处理时，需要借助Object.defineProperty定义setter监听父组件数据的变化，但是不能监听数据类型的数据，否则js代码会中断执行，并且没有报错提示。一种间接的处理方式是，新建一个整型数据，跟随数组一起变化，监听该数据间接监听数据变化。
   - 递归组件触发事件，只能一级一级往外传，并且要在该递归组件中监听该事件，才能往外传
-  - 
+- service elasticsearch start报错：  
+# Exception in thread "main" ElasticsearchException[Failed to load logging configuration]
+多半是权限问题，解决： 
+```bash
+sudo chown -R elasticsearch:elasticsearch /var/lib/elasticsearch
+sudo chown -R elasticsearch:elasticsearch /var/run/elasticsearch
+sudo chown -R elasticsearch:elasticsearch /etc/elasticsearch
+sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
+```
