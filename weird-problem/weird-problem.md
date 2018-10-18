@@ -375,3 +375,4 @@ sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
 - swiper和mint-ui的infinite scroll插件一起视使用，无限刷新事件不触发问题：
 在swiper的slide上添加overflow-y: auto，不要在infinite scroll的容器上加overflow-y: auto
 - 解决canvas getImageData 跨域问题时，如果为img加上crossOrigin属性的时机，在添加src属性的时机之后，在第二次访问页面时，依然会报跨域错误。猜测是，由于src属性比crossOrigin属性先添加，第二次访问时，有缓存，src生效比较快，从而导致crossOrigin还来不及生效。因此src属性必须在crossOrigin属性之后添加。
+- ios下webview的滚动容器滚动不跟手的问题，添加css属性：-webkit-overflow-scrolling: touch;
