@@ -1,5 +1,5 @@
 ## mac升级管理gcc
-现在[port](https://www.macports.org/install.php)
+下载[port](https://www.macports.org/install.php)
 ```bash
 # 添加环境变量
 vi ~/.bash_profile
