@@ -376,3 +376,13 @@ sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
 在swiper的slide上添加overflow-y: auto，不要在infinite scroll的容器上加overflow-y: auto
 - 解决canvas getImageData 跨域问题时，如果为img加上crossOrigin属性的时机，在添加src属性的时机之后，在第二次访问页面时，依然会报跨域错误。猜测是，由于src属性比crossOrigin属性先添加，第二次访问时，有缓存，src生效比较快，从而导致crossOrigin还来不及生效。因此src属性必须在crossOrigin属性之后添加。
 - ios下webview的滚动容器滚动不跟手的问题，添加css属性：-webkit-overflow-scrolling: touch;
+- pm2管理的nodjs服务启动后，一段时间后就会重启，问题可能是配置了进程的最大可用内存：
+```javascript
+// pm.config.json
+{
+  "name"   : "max_mem",
+  "script" : "big-array.js",
+  // 将该值修改大一点
+  "max_memory_restart" : "20M"
+}
+```
