@@ -114,3 +114,8 @@ let difference = new Set([...a].filter(x => !b.has(x)));
   - 对参数的数据类型，GET只接受ASCII字符，而POST没有限制。
   - GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
   - GET参数通过URL传递，POST放在Request body中。  
+- http缓存控制
+  - expired/cache-control（强缓存）：用两者设置缓存后，浏览器不会向服务请求；expired是服务器时间，客户端和服务端时间不一致，可能有问题；cache-control只有http 1.1支持。两者都存在，内容更新后，客户端资源得不到及时更新得问题
+  - last-modified/etag（弱缓存）：浏览器会向服务器确认资源是否过期，没有过期服务器返回304。但其实服务器无法精确确定last-modified时间；计算etag的hash有性能消耗。
+  - 缓存优先级：强缓存 > 弱缓存，具体是cache-control > expired > last-modified = etag
+  - 对于前端资源，一般都这只很长的强缓存，然后通过更新index.html的资源文件名来更新资源
