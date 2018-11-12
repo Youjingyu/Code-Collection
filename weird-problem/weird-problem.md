@@ -386,3 +386,7 @@ sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
   "max_memory_restart" : "20M"
 }
 ```
+- linux root用户全局安装需要gyp编译的包，报错：gyp WARN EACCES user "root" does not have permission to access the dev dir，安装时添加--unsafe-perm参数解决：
+```bash
+sudo npm i -g --unsafe-perm appmetrics
+```
