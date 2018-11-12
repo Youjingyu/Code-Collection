@@ -213,12 +213,14 @@ libstdc++.so.6 version glibcxx_3.4.21' not found
 // 重建默认库的软连接即可：https://itbilu.com/linux/management/NymXRUieg.html
 // 注意修改libstdc++.so.6.0.21版本，该文章中的是libstdc++.so.6.0.21，所有用到的地方都要修改为find / -name "libstdc++.so*"命令输出的版本
 ```
-- 针对上面的centos node-kafka报错，最简单的解决方式是一键升级GCC：
+- 针对上面的centos node-kafka报错，最简单的解决方式是一键升级GCC到gcc 7：
 ```bash
 sudo yum install centos-release-scl
 sudo yum install devtoolset-7-gcc*
 scl enable devtoolset-7 bash
 which gcc
+# 得到gcc路径：/opt/rh/devtoolset-7/root/usr/bin/gcc
+# source该路径上上上层目录中的/opt/rh/devtoolset-7/enable
 source /opt/rh/devtoolset-7/enable 
 gcc --version
 ```
