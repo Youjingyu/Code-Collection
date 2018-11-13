@@ -31,7 +31,7 @@
 - [dom操作](https://github.com/Youjingyu/Code-Collection/tree/master/code/dom-operation)
 - [剪切板操纵](https://github.com/Youjingyu/Code-Collection/tree/master/code/clipboard/clipboard.js)
 - [监听用户离开页面](https://github.com/Youjingyu/Code-Collection/tree/master/code/detect-leave-page/detect-leave-page.md)
-- [监听页面是否可见](https://github.com/Youjingyu/Code-Collection/tree/master/code/detect-page-visiblility/detect-page-visiblility.md)
+- [监听页面是否可见](https://github.com/Youjingyu/Code-Collection/blob/master/code/detect-page-visibility/detect-page-visibility.md)
 - [gulp配置](https://github.com/Youjingyu/Code-Collection/tree/master/code/gulp-config)
 - [kafka](https://github.com/Youjingyu/Code-Collection/blob/master/code/kafka/kafka.md)
 - [clickhouse](https://github.com/Youjingyu/Code-Collection/blob/master/code/clickhouse/clickhouse.md)
