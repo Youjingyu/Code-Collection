@@ -296,3 +296,7 @@ let difference = new Set([...a].filter(x => !b.has(x)));
     });
     ```
   - bridge初始化：由客户端注入bridge js，但是h5很难知道注入时机，因此需要监听ready事件
+- 模块循环依赖
+  - nodejs的require不会出现循环引用的问题，因为第一次require后模块存在内存中，第二次require的时候直接取内存中的值（模块导致出的exports），不会再执行一次模块
+  - es6也没有循环引用的问题：ES6根本不会关心是否发生了"循环加载"，只是生成一个指向被加载模块的引用，需要开发者自己保证，真正取值的时候能够取到值
+  - 详细及示例：http://www.ruanyifeng.com/blog/2015/11/circular-dependency.html
