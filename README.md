@@ -27,7 +27,7 @@
 - [kafka](https://github.com/Youjingyu/Code-Collection/blob/master/code/kafka/kafka.md)
 - [elasticsearch](https://github.com/Youjingyu/Code-Collection/blob/master/code/elasticsearch/elasticsearch.md)
 - [mysql](https://github.com/Youjingyu/Code-Collection/blob/master/code/mysql/mysql.md)
-- [linux系统初始化shell](https://github.com/Youjingyu/Code-Collection/blob/master/code/linux/linux-init.sh)
+- [linux](https://github.com/Youjingyu/Code-Collection/blob/master/code/linux)
 - [隐藏浏览器滚动条](https://github.com/Youjingyu/Code-Collection/blob/master/code/hide-scroll-bar/hide-scroll-bar.html)
 - [meta标签配置](https://github.com/Youjingyu/Code-Collection/blob/master/code/mobile-meta/mobile-meta.html)
 - [路径解析为树形结构](https://github.com/Youjingyu/Code-Collection/blob/master/code/parse-string-path-to-tree/parse-string-path-to-tree.js)
