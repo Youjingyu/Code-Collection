@@ -19,4 +19,4 @@ Parameters: /usr/local/bin/iterm2-recv-zmodem.sh
 ```
 如图：  
 ![item2](https://user-images.githubusercontent.com/15033260/40297193-8d83be8c-5d11-11e8-9282-2aca8542fcae.png)  
-重启item2，在服务器的命令行中输入rz，就可以选择本地文件上传了。
+重启item2，在服务器的命令行中输入`rz`，就可以选择本地文件上传了。在服务器上输入`sz filename filename1 ... filenameN`，弹出目录选择框，选择本地的存储目录，等待下载
