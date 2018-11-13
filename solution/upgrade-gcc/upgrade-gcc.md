@@ -15,3 +15,15 @@ sudo port select --set gcc mp-gcc6
 # 清空bash缓存
 hash -r
 ```
+## centos升级gcc
+一键升级GCC到gcc 7：
+```bash
+sudo yum install centos-release-scl
+sudo yum install devtoolset-7-gcc*
+scl enable devtoolset-7 bash
+which gcc
+# 得到gcc路径：/opt/rh/devtoolset-7/root/usr/bin/gcc
+# source该路径上上上层目录中的/opt/rh/devtoolset-7/enable
+source /opt/rh/devtoolset-7/enable 
+gcc --version
+```
