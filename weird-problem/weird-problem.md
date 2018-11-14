@@ -392,3 +392,10 @@ sudo chown -R elasticsearch:elasticsearch /var/log/elasticsearch
 ```bash
 sudo npm i -g --unsafe-perm appmetrics
 ```
+- ios下使用swiper导致系统级别的返回不能触发，配置下列选项解决：
+```javascript
+swiperOption: {
+  iOSEdgeSwipeDetection: true, // 设置为true开启IOS的UIWebView环境下的边缘探测。如果拖动是从屏幕边缘开始则不触发swiper
+  iOSEdgeSwipeThreshold: 50 // IOS的UIWebView环境下的边缘探测距离。如果拖动小于边缘探测距离则不触发swiper
+}
+```
