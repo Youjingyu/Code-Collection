@@ -18,6 +18,7 @@
 - [nodejs编译安装](https://github.com/Youjingyu/Code-Collection/blob/master/solution/install-nodejs/install-nodejs.md)
 - [windows调试安卓webview](https://github.com/Youjingyu/Code-Collection/blob/master/solution/inspect-webview/inspect-webview.md)
 - [升级gcc](https://github.com/Youjingyu/Code-Collection/blob/master/solution/upgrade-gcc/upgrade-gcc.md)
+- [安装llvm](https://github.com/Youjingyu/Code-Collection/blob/master/solution/install-llvm/install-llvm.md)
 - [git多ssh账户](https://github.com/Youjingyu/Code-Collection/blob/master/solution/git-multi-ssh/git-multi-ssh.md)
 - [页面埋点](https://github.com/Youjingyu/Code-Collection/blob/master/solution/load-time-summary/load-time-summary.md)
 - [获取网络信息](https://github.com/Youjingyu/Code-Collection/blob/master/solution/network-information/network-information.md)
