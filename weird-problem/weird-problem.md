@@ -399,3 +399,11 @@ swiperOption: {
   iOSEdgeSwipeThreshold: 50 // IOS的UIWebView环境下的边缘探测距离。如果拖动小于边缘探测距离则不触发swiper
 }
 ```
+- 使用node-rdkafka的new Kafka.KafkaConsumer消费数据时，js线程出错退出，但c++线程没有监听js的错误事件，不会退出，导致整个进程不会退出，从而pm2不会重启，看似pm2是online的，但其实js线程已经死了。解决方式是使用流来消费，即使用Kafka.KafkaConsumer.createReadStream，或者在js报错后，手动调用disconnect方法：
+```javascript
+const comsumer = new kafka.KafkaConsumer({})
+process.on('uncaughtException', () => {
+  comsumer.disconnect()
+})
+comsumer.connect()
+```
