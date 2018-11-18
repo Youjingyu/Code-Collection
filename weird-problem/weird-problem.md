@@ -6,7 +6,7 @@
 	- 参考[键盘事件keydown、keypress、keyup随笔整理总结](http://www.cnblogs.com/xcsn/p/3413074.html)
 	- 可以使用DOM 3级的KeyboardEvent来模拟keypress事件，但有部分兼容性问题，参考[KeyboardEvent](https://developer.mozilla.org/zh-CN/docs/Web/API/KeyboardEvent)
 - 如果canvas中绘制了跨域图片，canvas.toDataURL会报错，可以用img.setAttribute('cross0rigin', 'Anonymous')解决，但前提是服务器允许跨域请求图片
-- 呼出键盘后，页面元素被遮挡，可以设置页面高度为document.getClientHeight来解决
+- 呼出键盘后，页面元素被遮挡，可以设置页面高度为document.getClientHeight来解决，https://segmentfault.com/a/1190000006243816
 - 在ios下，呼出键盘后，页面元素的位置会调整，但绝对定位元素中的输入框的焦点却还在原来的位置。可以在呼出键盘后，手动使绝对定位元素中的input获得一次焦点来解决（focus方法）
 - ios下，不会执行keyup事件回调函数中的异步请求
 - 安卓下用vh设置高度，呼出键盘时内容会被压缩，同样的，可以设置页面的高度为document.getClientHeight来解决
