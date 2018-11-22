@@ -295,24 +295,24 @@
     2. WebView 中的 prompt/console/alert 拦截，通常使用 prompt，因为这个方法在前端中使用频率低，比较不会出现冲突；
     3. WebView URL Scheme 跳转拦截，webview发出请求，客户端拦截请求，然后通过window.dispatchEvent来回传数据（webview已经监听了对应的事件）
   - native通知js：
-      ```javascript
-      // ios
-      // Swift
-      webview.stringByEvaluatingJavaScriptFromString("alert('NativeCall')")
-      // android
-      // 调用js中的JSBridge.trigger方法
-      // 该方法的弊端是无法获取函数返回值；
-      webView.loadUrl("javascript:JSBridge.trigger('NativeCall')")
-      // android 4.4以上
-      // 4.4+后使用该方法便可调用并获取函数返回值；
-      // 这时我们需要使用前面提到的 prompt 的方法进行兼容，让 H5端 通过 prompt 进行数据的发送，客户端进行拦截并获取数据
-      mWebView.evaluateJavascript（"javascript:JSBridge.trigger('NativeCall')", 	 new ValueCallback<String>() {
-          @Override
-          public void onReceiveValue(String value) {
-              //此处为 js 返回的结果
-          }
-      });
-      ```
+    ```javascript
+    // ios
+    // Swift
+    webview.stringByEvaluatingJavaScriptFromString("alert('NativeCall')")
+    // android
+    // 调用js中的JSBridge.trigger方法
+    // 该方法的弊端是无法获取函数返回值；
+    webView.loadUrl("javascript:JSBridge.trigger('NativeCall')")
+    // android 4.4以上
+    // 4.4+后使用该方法便可调用并获取函数返回值；
+    // 这时我们需要使用前面提到的 prompt 的方法进行兼容，让 H5端 通过 prompt 进行数据的发送，客户端进行拦截并获取数据
+    mWebView.evaluateJavascript（"javascript:JSBridge.trigger('NativeCall')", 	 new ValueCallback<String>() {
+        @Override
+        public void onReceiveValue(String value) {
+            //此处为 js 返回的结果
+        }
+    });
+    ```
   - bridge初始化：由客户端注入bridge js，但是h5很难知道注入时机，因此需要监听ready事件
 - 模块循环依赖
   - nodejs的require不会出现循环引用的问题，因为第一次require后模块存在内存中，第二次require的时候直接取内存中的值（模块导致出的exports），不会再执行一次模块
