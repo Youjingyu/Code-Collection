@@ -1,4 +1,4 @@
-## rsyslog简单使用（v 8.x）
+## rsyslog简单使用（v8.x）
 
 推送端
 ```bash
@@ -73,4 +73,13 @@ ruleset(name="performance") {
         server="12.88.132.119"
         serverport="62320") stop
 }
+```
+
+验证rsyslog配置是否正确：
+```bash
+rsyslogd -N 1
+```
+在debug模式下运行
+```bash
+rsyslogd -dn
 ```
