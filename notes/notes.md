@@ -151,7 +151,7 @@
     # 不能指定域名，而且只能指定单一域名
     Access-Control-Allow-Origin: 'domain name'
     ```
-  - jsonp只能用于get请求，cors不支持ie10以下，jsonp只需要一次请求，cors多一次option请求。JSONP不是浏览器规范，服务端处理不当，有安全问题，并且jsonp的错误处理也不完善，只能监听script的onerror事件，但对于跨域的script error，浏览器不会给出详细的报错信息。
+  - jsonp只能用于get请求，cors不支持ie10以下，jsonp只需要一次请求，cors多一次option请求（非简单请求时）。JSONP不是浏览器规范，服务端处理不当，有安全问题，并且jsonp的错误处理也不完善，只能监听script的onerror事件，但对于跨域的script error，浏览器不会给出详细的报错信息。
   - 解决：jsonp、cors、代理服务器、iframe postMessage
 - http状态码：
   - 100：continue
@@ -550,6 +550,8 @@
   - vue稍微提供了一些好用的工具，比如v-model，
   - 社区：react丰富但没有官方的引导，造成混乱，百花齐放
   - react是很多新思想的起源地
+  - vue更渐进式
+  - vue缺少高阶组件之类的，随处的数据的更改，可能导致混乱
 - $route和$router的区别：$route是“路由信息对象”，包括path，params，hash，query，fullPath，matched，name等路由信息参数。而$router是“路由实例”对象包括了路由的跳转方法，钩子函数等
 - vue和react的虚拟dom的diff算法类似：
   - 其实diff算法大多数时候都不是最优的，如果人为介入肯定能做得巧，但是不可能每次对比都人为介入，diff算法做到了普适性，保证不太差
@@ -593,7 +595,6 @@
   });
   ```
 - css link @import的区别：
-  - link引用CSS时，在页面载入时同时加载；@import需要页面网页完全载入以后加载。
   - link引用CSS时，在页面载入时同时加载；@import需要页面网页完全载入以后加载。
   - link支持使用Javascript控制DOM去改变样式；而@import其实属于css不属于文档，js不能控制
 - 移动端1px边框的问题，原因：因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。解决：
