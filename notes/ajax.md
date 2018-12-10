@@ -16,13 +16,12 @@ if (window.XMLHttpRequest) {
 } else if (window.ActiveXObject) { // IE 6及以下
     xhr = new ActiveXObject("Microsoft.XMLHTTP");
 }
-// XMLHttpRequest 状态改变时会调用的函数
+// 监听 readystatechange 事件
 xhr.onreadystatechange = function () {
   if (xhr.readyState === 4) {
         if (xhr.status === 200) {
             console.log('请求成功')
         } else {
-            console.log('请求失败')            
         }
     }
 }
@@ -31,7 +30,7 @@ xhr.open('GET', '/api/hello');
 xhr.send();
 ```
 
-可见，发送一个 Ajax 请求，只需几步：实例化一个 XMLHttpRequest 对象，绑定其状态改变调用的函数 onreadystatechange，最后使用 open、send 方法发出请求即可。
+可见，发送一个 Ajax 请求，只需几步：实例化一个 XMLHttpRequest 对象，监听 readystatechange 事件，最后使用 open、send 方法发出请求即可。
 
 ### 深入
 
