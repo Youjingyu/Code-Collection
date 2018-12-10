@@ -12,14 +12,16 @@ webpack 的配置实在是太复杂了，所以前端社区常戏谑“每个前
 npm install --global rollup 
 ```
 
-安装完成后就可以使用 rollup 来打包我们的代码了。首先我们新建一个名为 test-rollup 的目录，然后在命令行中进入该目录，并用 npm 初始化：
+安装完成后就可以使用 rollup 来打包我们的代码了。
+
+首先我们新建一个名为 test-rollup 的目录，然后在命令行中进入该目录，并用 npm 初始化：
 
 ```bash
 cd test-rollup
 npm init # npm会让你输入一些信息，直接回车就行
 ```
 
-然后我们新建两个 js 文件 main.js、foo.js，分别写入如下代码：
+接着新建两个 js 文件 main.js、foo.js，分别写入如下代码：
 
 ```javascript
 // foo.js
