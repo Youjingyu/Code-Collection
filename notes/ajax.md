@@ -2,7 +2,7 @@
 
 在 Ajax 出现之前，网页想要和服务器通信，最常用的方式是使用 form 表单；用户提交表单后，浏览器就开始跳转，服务器接收表单并处理，然后将新的网页返回给浏览器；整个过程用户都只有等待，用户之前的操作状态会丢失，并且服务器返回的新网页常常和之前网页的大部分内容相同，浪费带宽；可见，使用表单来进行网页和服务器的交互，会做很多无谓的工作，浪费资源，用户体验还差。
 
-Ajax 是 Asynchronous JavaScript and XML（异步的 JavaScript 与 XML 技术）的缩写，并不是 JavaScript 的一部分，而是网页与服务器通信的一系列技术的总称。网页使用 Ajax 与服务器通信，可以规避上述 form 表单存在的问题，页面不会刷新，用户不用等待请求的返回，可以继续在我们的网页上“冲浪”。第一个大规模使用 Ajax 的网页应用是 Gmail，Gmail 的出现让大家意识到网页还能这么玩，网页也能做得像桌面应用一样，打破了大家对网页应用的认知，说 Ajax 为 web 技术注入了灵魂也不为过。
+Ajax 是 Asynchronous JavaScript and XML（异步的 JavaScript 与 XML 技术）的缩写，并不是 JavaScript 的一部分，而是网页与服务器通信的一系列技术的总称。网页使用 Ajax 与服务器通信，可以规避上述 form 表单存在的问题，页面不会刷新，用户不用等待请求的返回，可以继续在我们的网页上“冲浪”。第一个大规模使用 Ajax 的网页应用是 Gmail，Gmail 的出现让大家意识到网页还能这么玩，网页也能做得像桌面应用一样，打破了大家对网页应用的认知，可以说 Ajax 为 web 技术注入了灵魂。
 
 ### 使用
 
@@ -16,7 +16,7 @@ if (window.XMLHttpRequest) {
 } else if (window.ActiveXObject) { // IE 6及以下
   xhr = new ActiveXObject("Microsoft.XMLHTTP");
 }
-// 绑定 readyState 改变时调用的回调
+// 绑定 xhr.readyState 改变时调用的回调
 xhr.onreadystatechange = function () {
   if (xhr.readyState === 4) {
     if (xhr.status === 200) {
@@ -73,7 +73,7 @@ xhr.open方法，用于初始化请求，可以接受5个参数，后三个参�
 
 - method：要使用的HTTP方法，比如 GET、POST、PUT、DELETE 等
 - url：请求的url
-- async（可选）：是否发起异步请求，默认值为 true；注意，新版本的浏览器已经不建议将该值设置为 false，用于发起同步请求
+- async（可选）：是否发起异步请求，默认值为 true；注意，新版本的浏览器已经不建议将该值设置为 false 来发起同步请求
 - user（可选）：用户名，用于认证
 - password（可选）：用户密码，用于认证
 
@@ -206,7 +206,7 @@ xhr.onload = function () {
 
 #### 数据传输进度信息
 
-新版本的 XMLHttpRequest 允许我们监听数据传输的详细状态，上面的示例代码，我们使用了使用 onload 监听了一个数据传输完成的事件。可以监听的事件如下：
+新版本的 XMLHttpRequest 允许我们监听数据传输的详细状态，上面的示例代码，我们就使用 onload 监听了一个数据传输完成的事件。可以监听的事件如下：
 
 | 事件 | 描述 |
 |----------|----------|
@@ -220,7 +220,7 @@ xhr.onload = function () {
 
 ### 总结
 
-上面我们总结了 XMLHttpRequest 的大部分内容。XMLHttpRequest 已经非常强大了，通过它我们和服务器做复杂的交互，从而为我们开发出功能强大的 web 应用创造了条件。XMLHttpRequest 的 api 并不多，也不复杂，感兴趣的同学可以查看 [MDN XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 文档，了解更多内容。
+上面我们总结了 XMLHttpRequest 的大部分内容，可见XMLHttpRequest 已经非常强大了，通过它我们可以和服务器做复杂的交互，从而为我们开发出功能强大的 web 应用创造了条件。XMLHttpRequest 的 api 并不多，也不复杂，感兴趣的同学可以查看 [MDN XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 文档，了解更多内容。
 
 ### 参考资料
 
