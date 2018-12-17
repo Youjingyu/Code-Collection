@@ -152,7 +152,8 @@
     Access-Control-Allow-Origin: 'domain name'
     ```
   - jsonp只能用于get请求，cors不支持ie10以下，jsonp只需要一次请求，cors多一次option请求（非简单请求时）。JSONP不是浏览器规范，服务端处理不当，有安全问题，并且jsonp的错误处理也不完善，只能监听script的onerror事件，但对于跨域的script error，浏览器不会给出详细的报错信息。
-  - 解决：jsonp、cors、代理服务器、iframe postMessage
+  - 解决：jsonp、cors、代理服务器、iframe postMessage、document.domain
+  - document.domain 设置修改为当前域它的上一级域。比如当前域名为photo.sina.cn，只能修改为 sina.cn，然后就可以向 sina.cn 发送请求了。
 - http状态码：
   - 100：continue
   - 101：协议转换
@@ -789,3 +790,23 @@
   - 每次一个阶段执行完，都会执行process.nextTick、以及微任务（先执行process.nextTick）
 - pm2原理
   - satan负责退出、杀死进程（魔鬼），god进程负责保护重启进程（天使）、daemon（守护进程）就是nodejs原生cluster实现中的master
+- 正则表达式：
+  - ? 号：默认是指匹配其前面的子表达式0或1次，如果在 * + ? {m, n} 等限制字符后面，则表示是非贪婪模式，尽可能少地匹配
+  - ?:：非获取匹配，比如'industries'.match(/industr(?:y|ies)/)，结果是['industries'...]，而'industries'.match(/industr(y|ies)/)是结果是['industries','ies'...]
+  - ?=：正向肯定预检查，比如/whale(?=20)/，只匹配whale20中的whale，不匹配whale25中的whale
+  - ?!：正向否定预检查，比如/whale(?!20)/，不匹配whale20中的whale，但匹配whale25中的whale
+  - ?<=：负向肯定预检查，比如/(?<=20)whale/，只匹配20whale中的whale，不匹配25whale中的whale
+  - ?<!：负向否定预检查，比如/(?<!20)whale/，不匹配20whale中的whale，但匹配25whale中的whale
+- css样式优先级：
+  - 首先：浏览器 + !important> 用户 + !important> 开发者 + !important> 开发者 > 用户 > 浏览器
+  - 然后行内样式 > 选择器样式
+  - 内联样式和外部引入的样式是等效的（它们比较 权重+声明顺序）
+- float在flex盒子中会被忽略
+- webpack的按需加载：require.ensure，看起来是基于AMD规范（seajs是CMD规范）
+- for of：只要部署了 Iterator 接口就能使用，比如 array、map、set、类数组（arguments、node list）。普通对象不能直接使用，可以 for key in Object.keys(obj)
+- 浏览器渲染过程：
+  -处理HTML标记数据并生成DOM树。
+  -处理CSS标记数据并生成CSSOM树。
+  -将DOM树与CSSOM树合并在一起生成渲染树。
+  -遍历渲染树开始布局，计算每个节点的位置信息。
+  -将每个节点绘制到屏幕。
