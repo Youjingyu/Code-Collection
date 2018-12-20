@@ -100,44 +100,50 @@
 - http缓存控制
   - expired/cache-control（强缓存）：用两者设置缓存后，浏览器不会向服务请求；expired是服务器时间，客户端和服务端时间不一致，可能有问题；cache-control（max-age、no-cache）只有http 1.1支持。两者都存在，内容更新后，客户端资源得不到及时更新得问题
   - last-modified/etag（弱缓存）：浏览器会向服务器确认资源是否过期，没有过期服务器返回304。但其实服务器无法精确确定last-modified时间，所以为资源分配一个id即etag；计算etag的hash有性能消耗。
-  - 缓存优先级：强缓存 > 弱缓存，具体是cache-control > expired > last-modified = etag
+  - 另外 http1 还有各一个Pragma，可取值为 no-cache，可以禁止缓存
+  - 缓存优先级：强缓存 > 弱缓存，具体是pragma > cache-control > expired > last-modified = etag
+  - cache-control 的值
+    - public：任何情况都要缓存资源（即使需要http认证的资源）
+    - no-store：不会缓存资源到内存、硬盘
+    - no-cache：不直接使用cache，需要向服务器验证
+    - max-age：多少秒内无需向服务器请求
   - 对于前端资源，一般都这只很长的强缓存，然后通过更新index.html的资源文件名来更新资源
-  - 箭头函数的this、arguments都是父级作用域的this、arguments，bind、call、apply对箭头函数无效，箭头函数没有prototype，不能对箭头函数使用new，yield 关键字通常不能在箭头函数中使用（除非是嵌套在允许使用的函数内）
-  - 虽然箭头函数中的箭头不是运算符，但箭头函数具有与常规函数不同的特殊运算符优先级解析规则
-    ```javascript
-      callback = callback || () => {};      
-      // SyntaxError: invalid arrow-function arguments
+- 箭头函数的this、arguments都是父级作用域的this、arguments，bind、call、apply对箭头函数无效，箭头函数没有prototype，不能对箭头函数使用new，yield 关键字通常不能在箭头函数中使用（除非是嵌套在允许使用的函数内）
+- 虽然箭头函数中的箭头不是运算符，但箭头函数具有与常规函数不同的特殊运算符优先级解析规则
+  ```javascript
+    callback = callback || () => {};      
+    // SyntaxError: invalid arrow-function arguments
 
-      callback = callback || (() => {});    // ok
-    ```
-  - 闭包：可以理解为能够读取其他函数内部变量的函数，由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成"定义在一个函数内部的函数"。所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
-  - mdn：闭包是函数和声明该函数的词法环境的组合
-  - 同一个函数内部的闭包作用域只有一个，所有闭包共享。在执行函数的时候，如果遇到闭包，则会创建闭包作用域的内存空间，将该闭包所用到的局部变量添加进去，然后再遇到闭包时，会在之前创建好的作用域空间添加此闭包会用到而前闭包没用到的变量。函数结束时，会清除没有被闭包作用域引用的变量。
-    ```javascript
-    const heapdump = require('heapdump')
-    let leakObject = null
-    let count = 0
-    /* 这段代码内存泄露原因是：在 testMemoryLeak 函数内有两个闭包：unused 和 leakMethod。unused 这个闭包引用了父作用域中的 originLeakObject 变量，如果没有后面的 leakMethod，则会在函数结束后被清除，闭包作用域也跟着被清除了。因为后面的 leakObject 是全局变量，即 leakMethod 是全局变量，它引用的闭包作用域（包含了 unused 所引用的 originLeakObject）不会释放。而随着 testMemoryLeak 不断的调用，originLeakObject 指向前一次的 leakObject，下次的 leakObject.leakMethod 又会引用之前的 originLeakObject，从而形成一个闭包引用链，而 leakStr 是一个大字符串，得不到释放，从而造成了内存泄漏。
+    callback = callback || (() => {});    // ok
+  ```
+- 闭包：可以理解为能够读取其他函数内部变量的函数，由于在Javascript语言中，只有函数内部的子函数才能读取局部变量，因此可以把闭包简单理解成"定义在一个函数内部的函数"。所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+- mdn：闭包是函数和声明该函数的词法环境的组合
+- 同一个函数内部的闭包作用域只有一个，所有闭包共享。在执行函数的时候，如果遇到闭包，则会创建闭包作用域的内存空间，将该闭包所用到的局部变量添加进去，然后再遇到闭包时，会在之前创建好的作用域空间添加此闭包会用到而前闭包没用到的变量。函数结束时，会清除没有被闭包作用域引用的变量。
+  ```javascript
+  const heapdump = require('heapdump')
+  let leakObject = null
+  let count = 0
+  /* 这段代码内存泄露原因是：在 testMemoryLeak 函数内有两个闭包：unused 和 leakMethod。unused 这个闭包引用了父作用域中的 originLeakObject 变量，如果没有后面的 leakMethod，则会在函数结束后被清除，闭包作用域也跟着被清除了。因为后面的 leakObject 是全局变量，即 leakMethod 是全局变量，它引用的闭包作用域（包含了 unused 所引用的 originLeakObject）不会释放。而随着 testMemoryLeak 不断的调用，originLeakObject 指向前一次的 leakObject，下次的 leakObject.leakMethod 又会引用之前的 originLeakObject，从而形成一个闭包引用链，而 leakStr 是一个大字符串，得不到释放，从而造成了内存泄漏。
 
-    解决方法：在 testMemoryLeak 函数内部的最后添加 originLeakObject = null 即可。 */
-    // 全局变量leakObject引用了局部变量leakMethod函数，导致testMemoryLeak的闭包不能释放，因为闭包作用域只有一个，
-    // 所以unused函数对originLeakObject函数的引用也不能释放
-    setInterval(function testMemoryLeak() {
-      const originLeakObject = leakObject
-      const unused = function () {
-        if (originLeakObject) {
-          console.log('originLeakObject')
-        }
+  解决方法：在 testMemoryLeak 函数内部的最后添加 originLeakObject = null 即可。 */
+  // 全局变量leakObject引用了局部变量leakMethod函数，导致testMemoryLeak的闭包不能释放，因为闭包作用域只有一个，
+  // 所以unused函数对originLeakObject函数的引用也不能释放
+  setInterval(function testMemoryLeak() {
+    const originLeakObject = leakObject
+    const unused = function () {
+      if (originLeakObject) {
+        console.log('originLeakObject')
       }
-      leakObject = {
-        count: String(count++),
-        leakStr: new Array(1e7).join('*'),
-        leakMethod: function () {
-          console.log('leakMessage')
-        }
+    }
+    leakObject = {
+      count: String(count++),
+      leakStr: new Array(1e7).join('*'),
+      leakMethod: function () {
+        console.log('leakMessage')
       }
-    }, 1000)
-    ```
+    }
+  }, 1000)
+  ```
 - 跨域
   - script、link、img、video、iframe、@font-face等可以跨域
   - 存储在浏览器中的数据，如localStorage和IndexedDB，以源进行分割。每个源都拥有自己单独的存储空间，一个源中的Javascript脚本不能对属于其它源的数据进行读写操作。
@@ -810,3 +816,23 @@
   -将DOM树与CSSOM树合并在一起生成渲染树。
   -遍历渲染树开始布局，计算每个节点的位置信息。
   -将每个节点绘制到屏幕。
+- meta 标签作用
+  - seo相关
+    - <meta name="description" content="免费在线教程">
+    - <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+    - <meta name="author" content="runoob">
+  - <meta charset="UTF-8">
+  - 默认mobile浏览器中，浏览器的渲染宽度大于屏幕宽度，所以需要设置渲染宽度为屏幕宽度
+    - <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  - http头
+    - <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  - 定义添加到主屏的图标、标题、是否全屏模式
+  - 识别邮箱、电话
+  - 配置浏览器的渲染模式
+- offset相关属性（用于描述元素的边界框，只对块级元素比较准。对于行内元素，如果换行了，获取到左上角是最开始的左上角，[图](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/offsetLeft)）
+  - offsetHeight：上下padding + 上下border  + height + 水平滚动条
+  - offsetWidth：左右padding + 左右border + width + 垂直滚动条
+  - offsetLeft: 左边界相对于 offsetParent 的偏移
+  - offsetTop: 上边界相对于 offsetParent 的偏移
+  - offsetParent: 返回包含改元素的最近的定位元素，如果display=none，返回null
+  - https://www.cnblogs.com/youxin/archive/2012/09/21/2697514.html
