@@ -423,18 +423,14 @@
 - 引用跨域的script报错时，error message是Script error，解决方式是，服务端允许跨域，并且在script标签上添加crossorigin="anonymous"
 - Node.js 中的 http.Agent 用于池化 HTTP 客户端请求的 socket (pooling sockets used in HTTP client requests). 也就是复用 HTTP 请求时候的 socket. 如果你没有指定 Agent 的话, 默认用的是 http.globalAgent
 - https加密流程：
-  1. 浏览器将自己支持的一套加密规则发送给网站。 
-  2. 网站从中选出一组加密算法与HASH算法，并将自己的身份信息以证书的形式发回给浏览器。证书里面包含了网站地址，加密公钥，以及证书的颁发机构等信息。 
-  3. 浏览器获得网站证书之后浏览器要做以下工作： 
-    a) 验证证书的合法性（颁发证书的机构是否合法，证书中包含的网站地址是否与正在访问的地址一致等），如果证书受信任，则浏览器栏里面会显示一个小锁头，否则会给出证书不受信的提示。   
-    b) 如果证书受信任，或者是用户接受了不受信的证书，浏览器会生成一串随机数的密码，并用证书中提供的公钥加密。   
-    c) 使用约定好的HASH算法计算握手消息，并使用生成的随机数对消息进行加密，最后将之前生成的所有信息发送给网站。   
-  4. 网站接收浏览器发来的数据之后要做以下的操作： 
-    a) 使用自己的私钥将信息解密取出密码，使用密码解密浏览器发来的握手消息，并验证HASH是否与浏览器发来的一致。   
-    b) 使用密码加密一段握手消息，发送给浏览器。   
-  5. 浏览器解密并计算握手消息的HASH，如果与服务端发来的HASH一致，此时握手过程结束，之后所有的通信数据将由之前浏览器生成的随机密码并利用对称加密算法进行加密
-  6. https://blog.csdn.net/clh604/article/details/22179907
-  7. https://www.jianshu.com/p/7158568e4867
+  - Client Hello: 客户端向服务端发送 Client Hello 消息，这个消息里包含了一个客户端生成的随机数 Random1、客户端支持的加密套件（Support Ciphers）和 SSL Version 等信息
+  - Server Hello: 服务端向客户端发送 Server Hello 消息，这个消息会从 Client Hello 传过来的 Support Ciphers 里确定一份加密套件，这个套件决定了后续加密和生成摘要时具体使用哪些算法，另外还会生成一份随机数 Random2。注意，至此客户端和服务端都拥有了两个随机数（Random1+ Random2）
+  - Certificate: 服务端将自己的证书下发给客户端，让客户端验证自己的身份，客户端验证通过后取出证书中的公钥
+  - Server Key Exchange: 如果是DH算法，这里发送服务器使用的DH参数。RSA算法不需要这一步
+  - Certificate Request: Certificate Request 是服务端要求客户端上报证书，这一步是可选的，对于安全性要求高的场景会用到
+  - Server Hello Done: 通知客户端 Server Hello 过程结束
+  - 
+  - https://www.jianshu.com/p/7158568e4867
 - 前端工程化：
   - 目的
 - es6 class：
@@ -788,7 +784,7 @@
   ```
 - nodejs事件循环依次阶段：
   - timers：执行setTimeout() 和 setInterval()中到期的callback。
-  - I/O callbacks：上一轮循环中有少数的I/Ocallback会被延迟到这一轮的这一阶段执行
+  - I/O callbacks：执行一些系统调用错误，比如网络通信的错误回调
   - idle, prepare：仅内部使用
   - poll：最为重要的阶段，执行I/O callback，在适当的条件下会阻塞在这个阶段
   - check：执行setImmediate的callback
@@ -836,3 +832,13 @@
   - offsetTop: 上边界相对于 offsetParent 的偏移
   - offsetParent: 返回包含改元素的最近的定位元素，如果display=none，返回null
   - https://www.cnblogs.com/youxin/archive/2012/09/21/2697514.html
+- 结合数组和链表的优势
+  - 无序的：hash map
+  - 有序的：平衡二叉树
+- hash map 解决冲突：在冲突的位置添加一个链表
+- http method:
+  - GET（SELECT）：从服务器取出资源（一项或多项）。
+  - POST（CREATE）：在服务器新建一个资源。
+  - PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。
+  - PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。
+  - DELETE（DELETE）：从服务器删除资源。
