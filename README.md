@@ -56,7 +56,7 @@
 
 ### 其他
 - [笔记](https://github.com/Youjingyu/Code-Collection/blob/master/notes/notes.md)
-- [windows利用vpn远程访问](https://github.com/Youjingyu/Code-Collection/tree/master/system)
+- [电脑配置](https://github.com/Youjingyu/Code-Collection/tree/master/system)
 - [基于正态分布的前端性能数据分析（一）](https://zhuanlan.zhihu.com/p/32482391)
 - [基于正态分布的前端性能数据分析（二）](https://zhuanlan.zhihu.com/p/32682197)
 - [快应用开发框架vue-hap-tools实现原理](https://zhuanlan.zhihu.com/p/36304914)

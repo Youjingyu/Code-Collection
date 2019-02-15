@@ -407,3 +407,5 @@ process.on('uncaughtException', () => {
 })
 comsumer.connect()
 ```
+- gitlab 401 unauthorized while accessing：升级 git 解决
+- cnpm login 时报错：cnpm 409 /user/org.couchdb.user: ... conflict，很可能是密码写错了。
