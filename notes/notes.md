@@ -842,3 +842,10 @@
   - PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。
   - PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。
   - DELETE（DELETE）：从服务器删除资源。
+- dom.appendChild 的参数如果是已经在 dom 树中的元素，效果是移动该元素到指定元素，因此可用于移动元素的位置。如果参数是 DocumentFragment 节点，则不会直接插入它，而是把它的子节点按序插入当前节点的 childNodes[] 数组的末尾。另一个用法是剪切元素中的子元素到 fragment，vue 的做法即是如此：
+  ```javascript
+    var fragment = document.createDocumentFragment(),  child;
+    while (child = el.firstChild) {
+        fragment.appendChild(child);
+    }
+  ```
