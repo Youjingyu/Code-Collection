@@ -1,3 +1,5 @@
 .idea
 .vscode
 test*
+/**/*/node_modules
+/**/*/dist
