@@ -1,0 +1,16 @@
+{
+  "name": "simple-mvvm",
+  "version": "0.0.1",
+  "description": "simple mvvm",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "rollup -c rollup.config.js -w ./src"
+  },
+  "author": "whale",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^1.2.0",
+    "rollup-plugin-livereload": "^1.0.0",
+    "rollup-plugin-serve": "^1.0.1"
+  }
+}
