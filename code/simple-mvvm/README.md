@@ -15,7 +15,7 @@ npm run dev
 - dep，一个简单的发布-订阅器，用于 watcher 和 observer 之间的沟通
 - compiler，解析模板，并为模板中用到的每个数据实例化一个 watcher
 
-除 compiler 之外的部分，都不叫简单，不再赘述
+除 compiler 之外的部分，都比较简单，不再赘述
 
 #### compiler
 
