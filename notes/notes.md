@@ -277,7 +277,7 @@
       child.prototype.constructor = child
     }
     ```
-  -  instanceof：obj 会一直沿着隐式原型链 __proto__ 向上查找直到 某一级的__proto__为被判断的对象的prototype为止，如果找到则返回 true，也就是 obj 为 Obj 的一个实例。否则返回 false，obj 不是 Obj 的实例。（注：对象的__proto__指向真正该对象继承的来源，该来源又是类的prototype，所以这样判断）
+  -  instanceof：obj 会一直沿着隐式原型链 __proto__ 向上查找直到 某一级的__proto__为被判断的对象的 constructor 的 prototype 为止，如果找到则返回 true，也就是 obj 为 Obj 的一个实例。否则返回 false，obj 不是 Obj 的实例。（注：对象的__proto__指向真正该对象继承的来源，该来源又是类的prototype，所以这样判断）
 - transition缺点：需要事件触发，无法自动播放，无法重复播放，只能定义首尾状态，无法定义中间状态，只能定义一个属性变化，animation解决了这些问题
   ```css
   .div {
@@ -742,6 +742,8 @@
   - 可以适当增大新生代空间，但也会导致单次gc时间变大
   - 使用全局cache对象时，会导致老生代变大，导致gc变慢，可以使用外部数据库来做缓存，如redis
   - 适当地使用stream
+  - 渲染模板缓存
+  - 接口缓存（外部、内存）
 - 域名解析类型
   - A记录：将域名指向一个IPv4地址
   - CNAME：将域名指向另外一个域名，使用cname指向不属于自己的域名时，https证书过不了（比如将自己的域名执行github）
@@ -790,9 +792,9 @@
   ```
 - nodejs事件循环依次阶段：
   - timers：执行setTimeout() 和 setInterval()中到期的callback。
-  - I/O callbacks：执行一些系统调用错误，比如网络通信的错误回调
+  - I/O callbacks(pending callbacks)：执行一些系统调用错误，比如 TCP errors
   - idle, prepare：仅内部使用
-  - poll：最为重要的阶段，执行I/O callback，在适当的条件下会阻塞在这个阶段
+  - poll：先执行I/O callback，然后如果有定时器到期，回到 timers 阶段执行 timers 回调，如果有 setImmediate，则前往 check 阶段
   - check：执行setImmediate的callback
   - close callbacks：执行close事件的callback，例如socket.on("close",func)
   - 每次一个阶段执行完，都会执行process.nextTick、以及微任务（先执行process.nextTick）
@@ -853,5 +855,28 @@
     var fragment = document.createDocumentFragment(),  child;
     while (child = el.firstChild) {
         fragment.appendChild(child);
+    }
+  ```
+- cpu 调度算法
+  - 多核 cpu
+    1. 系统维护一个全局任务队列，一有 cpu 空闲就取出任务执行。优点：cpu 利用率高
+    2. 系统为每个 cpu 维护一个局部队列，某个 cpu 空闲时，取出对应的局部任务执行。优点：任务无需在 cpu 之间切换，有利于 cpu cache 命中率
+    3. 大多数系统采用 1
+  - 多核 cpu
+    - 定义一个较小的时间单元
+    - 为每个进程分配不超过一个时间片的CPU。若进程在一个时间片里结束，则释放CPU。若进程不能在一个时间片里结束，还是要释放CPU，并进行上下文切换，将进程加入到就绪队列的尾部。
+
+- 浏览器 js 线程和 ui render 线程不是一个线程，但两个线程互斥
+- JSONP 实现：
+  ```javascript
+    function jsonp(url, jsonpCallback, success) {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.type = 'text/javascript'
+      window[jsonpCallback] = function(data) {
+        success && success(data)
+      }
+      document.body.appendChild(script)
     }
   ```
