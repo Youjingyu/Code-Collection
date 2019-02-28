@@ -32,6 +32,7 @@
 ### 代码片段
 
 - [图片预处理](https://github.com/Youjingyu/Code-Collection/tree/master/code/image-processing)
+- [mvvm 实现](https://github.com/Youjingyu/Code-Collection/tree/master/code/simple-mvvm)
 - [dom 操作封装](https://github.com/Youjingyu/Code-Collection/tree/master/code/dom-operation)
 - [剪切板操纵](https://github.com/Youjingyu/Code-Collection/tree/master/code/clipboard/clipboard.js)
 - [mocha 在浏览器中测试 es6 代码](https://github.com/Youjingyu/Code-Collection/blob/master/solution/mocha-es6-in-browser/project)
@@ -44,6 +45,7 @@
 - [mysql](https://github.com/Youjingyu/Code-Collection/blob/master/code/mysql/mysql.md)
 - [linux](https://github.com/Youjingyu/Code-Collection/blob/master/code/linux)
 - [nginx](https://github.com/Youjingyu/Code-Collection/blob/master/code/nginx/nginx.md)
+- [rsyslog](https://github.com/Youjingyu/Code-Collection/blob/master/code/rsyslog/rsyslog.md)
 - [隐藏浏览器滚动条](https://github.com/Youjingyu/Code-Collection/blob/master/code/hide-scroll-bar/hide-scroll-bar.html)
 - [meta 标签配置](https://github.com/Youjingyu/Code-Collection/blob/master/code/mobile-meta/mobile-meta.html)
 - [路径解析为树形结构](https://github.com/Youjingyu/Code-Collection/blob/master/code/parse-string-path-to-tree/parse-string-path-to-tree.js)
@@ -57,12 +59,12 @@
 
 ### 算法理解
 - 排序
-  - [冒泡排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/sort/bubble.js)
-  - [快速排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/sort/quick.js)
-  - [插入排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/sort/insert.js)
-  - [选择排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/sort/secletion.js)
+  - [冒泡排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/algorithm/sort/bubble.js)
+  - [快速排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/algorithm/sort/quick.js)
+  - [插入排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/algorithm/sort/insert.js)
+  - [选择排序](https://github.com/Youjingyu/Code-Collection/tree/master/code/algorithm/sort/secletion.js)
 - 查找
-  - [二分查找](https://github.com/Youjingyu/Code-Collection/tree/master/code/search/binary-search.js)
+  - [二分查找](https://github.com/Youjingyu/Code-Collection/tree/master/code/algorithm/search/binary-search.js)
 
 ### 读书笔记
 
@@ -75,3 +77,5 @@
 - [基于正态分布的前端性能数据分析（一）](https://zhuanlan.zhihu.com/p/32482391)
 - [基于正态分布的前端性能数据分析（二）](https://zhuanlan.zhihu.com/p/32682197)
 - [快应用开发框架 vue-hap-tools 实现原理](https://zhuanlan.zhihu.com/p/36304914)
+- [Ajax 入门](https://github.com/Youjingyu/Code-Collection/blob/master/notes/ajax.md)
+- [rollup 入门](https://github.com/Youjingyu/Code-Collection/blob/master/notes/rollup.md)
