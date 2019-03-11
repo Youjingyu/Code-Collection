@@ -225,10 +225,15 @@
 - 文件上传断点续传：文件分片上传，通过分片id续传
 - vue-rouer：根据路由确定要渲染的组件，hash模式通过hashchange事件实现，history模式利用html5的history api，由于hash后的内容浏览器会忽略，所以服务器完全不知道
 - BFC
-  - FC是formatting context的首字母缩写，直译过来是格式化上下文，它是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用
+  - FC是Block Formatting Context的首字母缩写，直译过来是格式化上下文，它是Web页面的可视化CSS渲染的一部分，是布局过程中生成块级盒子的区域，比如根元素就是一个 bfc。块格式化上下文包含创建它的元素内部的所有内容，所以可以用于阻止 margin 合并，清除浮动。
   - 常见的FC有BFC、IFC（行级格式化上下文），还有GFC（网格布局格式化上下文）和FFC（自适应格式化上下文
   - BFC 可以简单的理解为某个元素的一个 CSS 属性，只不过这个属性不能被开发者显式的修改，拥有这个属性的元素对内部元素和外部元素会表现出一些特性，这就是BFC。
-  - 可以触发BFC的属性：float不为none，overflow不为visible，display的值为table、inline-block、table-cell、table-caption，position的值为absolute或fixed，
+  - 特性：
+    - 内部 box 会在垂直方向上，一个个放置
+    - bfc 内部的相邻 box 会有 margin 合并，与外部不重叠
+    - 是一个独立容器，子元素不影响外部
+    - 浮动元素也参与计算高度
+  - 可以触发BFC的属性：float不为none，overflow不为visible，display的值为table、inline-block、table-cell、table-caption，position的值为absolute或fixed，这些属性都是取巧实现 bfc，可能有副作用，一个无副作用的 bfc 声明：display: flow-root
   - 可用于清除浮动、阻止margin合并
 - XSS：跨站脚本（Cross-site scripting），通过客户端脚本语言（最常见如：JavaScript）在一个论坛发帖中发布一段恶意的JavaScript代码就是脚本注入，如果这个代码内容有请求外部服务器，那么就叫做XSS  
   - 存储型XSS：用户提交恶意表单，数据被存入数据库，其他用户请求的，浏览器执行了恶意表单中的代码
@@ -342,10 +347,12 @@
   - valueOf方法：数字、字符串、对象、数组、函数的valueOf都是本身，Date的valueOf返回数字类型的毫秒时间戳，undefined、null报错
   - toString方法：数字（字符串数字），NaN（字符串NaN），undefined报错，字符串（本身），boolean（boolean字符串），array(array.join(','))，function(func文本)，Date（当地时间字符串），除这些对象及其实例化对象之外，其他对象返回的都是该对象的类型，也即Object.prototype.toString()的返回值
   - 隐士转换时内部执行`ToPrimitive(input, PreferredType?)`，如果，PreferredType是要转换到的类型，只有转换Date时是string，其他时候都是number
-  - + ：统一往number转，即调用valueOf，转换后，如果不是原始值 ，调用toString
-  - - * / ：调用valueOf，转换后，如果不是原始值 ，调用toString，转为原始值后再toNumber
+  - + ：统一往原始值转，即 `ToPrimitive(input, number)`，首先调用valueOf，转换后，如果不是原始值，调用toString。
+    - 比如 `{} + {}`，对 {}.valueOf = {}，{}.toString = '[object Object]'，结果就是两个字符串相加
+  - - * / ：统一转 number，即 `ToPrimitive(input, number)` 后再 toNumber，首先用valueOf，转换后，如果不是原始值 ，调用toString，再转为 toNumber
+    - 比如 `2 * {}`，{}.valueOf = {}，{}.toString = '[object Object]'，toNumber = NaN，最后 2 * NaN = NaN
   - == ：比较x==y
-    1. typeOf两者相同，基本类型按照强等比，NaN不等于NaN，引用类型，按指针比
+    1. typeOf两者相同，基本类型按照强等比，NaN不等于NaN，+0 = -0，引用类型按指针比
     2. typeOf两者不同，null=undefined，字符串、Boolean会toNumber，对象调用ToPrimitive
   - https://juejin.im/post/5a7172d9f265da3e3245cbca
 - 使用call调用对象的方法时，之所以要`Object.prototype.method`，而不是`Object.method`，是因为后者没有实例化，没有this
@@ -541,7 +548,7 @@
 - Object.is()用于比较值是否严格相等，解决了===判断NaN为不相等，-0 +0判断为相等的问题
 - 向 Set 加入值的时候，不会发生类型转换，所以5和"5"是两个不同的值。Set 内部判断两个值是否不同，使用的算法叫做“Same-value-zero equality”，它类似于精确相等运算符（===），主要的区别是NaN等于自身，而精确相等运算符认为NaN不等于自身。
 - defer与async的区别是：defer要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），才会执行；async一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染。一句话，defer是“渲染完再执行”，async是“下载完就执行”。另外，如果有多个defer脚本，会按照它们在页面出现的顺序加载，而多个async脚本是不能保证加载顺序的。
-- mvvm：Model-ViewModel-View，View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互
+- mvvm：Model-View-ViewModel，View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互
 - vue声明周期：
   - beforeCreate：实例初始后，初始化事件和lifecycle后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用
   - created：实例化完成，data、computed、watch等被实现，$el属性还不可见
@@ -732,10 +739,10 @@
     ```
 - vue mvvm实现思路：
   1. 递归defineProperty
-- nodejs性能优化：
+- nodejs性能优化：执行方面（新版 node、序列化、耗时操作异步化（提前响应））、缓存（内存缓存、外部缓存）、适当增加新生代空间
   - 使用新版本nodejs
-  - 使用fast-json-stringify、考虑手写parse
-  - promise、async/await的性能和内存占用都比callback差，可以考虑require('bluebird').promise，使用一个await，v8可能需要两三个promise实例来实现
+  - 使用fast-json-stringify、考虑手写parse、msgpack
+  - promise、async/await的性能和内存占用都比callback差，可以考虑require('bluebird').promise，使用一个await，v8可能需要两三promise实例来实现（最新版已被优化为一个）
     - bluebird没有完全按照promise的标准实现，但覆盖了99%的场景
     - v8的promise是用js实现的，在其实现中，为每个promise实例都分配的几个数组、闭包，导致内存占用增大
   - 避免串行的await
@@ -744,6 +751,16 @@
   - 适当地使用stream
   - 渲染模板缓存
   - 接口缓存（外部、内存）
+- nodejs 内存泄露
+  - 在全局对象上挂了无限增大的对象
+  - 全局缓存过大
+  - 意外的无法释放的内存，比如闭包，导致随着运行时间的增长，内存越来越大
+  - 还可能是第三方 c++ 扩展没有管理好内存，导致内存持续增加
+  - 在同一个对象上无限添加事件监听，比如 keep-alive 的 socket，每次请求都添加事件监听，而忘记 remove
+- nodejs 内存泄露分析
+  - v8profiler、heapdump 打内存快照（打之前可以先调用 gc()，前提是启动时加上 --expose-gc 参数）
+  - 进程级别的 dump
+  - 因为我们写的代码都追求单一职责、纯，所以没有遇到过内存泄露
 - 域名解析类型
   - A记录：将域名指向一个IPv4地址
   - CNAME：将域名指向另外一个域名，使用cname指向不属于自己的域名时，https证书过不了（比如将自己的域名执行github）
@@ -896,3 +913,59 @@
     - 共享内存：多进程共享一段内存，但是具有多个进程读取值的锁问题
     - 套接字（socket）：更为一般的进程间通信机制，可用于不同机器之间的进程间通信
   - http://www.ywnds.com/?p=1031
+- uml 图
+  - 类方框中的 + 表示public-， - 表示private， # 表示protected，实际上的完整的表示是：属性 `可见性 名称:类型 [ = 默认值 ]`，类：`可见性 名称(参数列表) [ : 返回类型]`
+  - 类之间的关系略
+- 设计模式：
+  - 工厂模式：通过一个函数放回一个对象，确定：每次都需要新建对象类实例
+  - 单例模式：一个只能实例化一次的类，全局都调它。比如，所有操作都得向全局唯一的线程池控制器类获取线程。优点，总线便于控制，缺点，不符合单一职责原则，类不应该限制外部该如何实例化它
+  - 适配器模式：将一个类的接口转换成客户希望的另外一个接口。缺点：滥用会造成系统的紊乱
+  - 装饰器模式：允许向一个现有的对象添加新的功能，同时又不改变其结构
+  - 代理模式：为其他对象提供一种代理以控制对这个对象的访问（proxy）
+  - 中介者模式: 对象与对象之间存在大量的关联关系，用中介者来维护之间的关系
+  - 观察者模式：定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新
+- proxy：defineProperty 如单词的意思，只能劫持对象的属性，但是 proxy 可以劫持对象本身，是一种元编程
+- react 生命周期：https://react.docschina.org/docs/state-and-lifecycle.html
+  - 获取 props，init state ->componentWillMount -> render() -> componentDidMount -> 运行时 -> state 改变 -> shouldComponentUpdate(true) -> componentWillUpdate -> render() -> componentDidUpdate
+  - 父组件更新了子组件的 props -> componentWillRecieveProps
+  - 卸载 -> componentWillUnmount
+- this 本质：一种说法，码农觉得全局变量好爽啊，但是不优雅，所以折中出现了 context 的概念，在一个上下文中可以随便访问 context 中的变量，在 js 中 context 就是 this，比如 class 中的 this，可以在任何地方访问类上的属性。
+- tcp/udp
+  - tcp：是面向连接的，发送数据之前必须三次握手建立连接，需要维护状态
+  - udp：udp不面向连接，尽可能快地交互，一台机器可以同时发出多个数据包，从而可以广播，ping 命令就是用的 udp
+  - 猜测，tcp 用得多的原因：用 udp 需要程序自己维护可靠性，还不如就给 tcp 维护
+- vue 性能优化
+  - 加载时：
+    - spa 懒加载，以及其他通用加载时优化
+    - 异步组件（resolve 后才会初始化）
+    - 骨架屏
+    - ssr，prerender（先返回提前渲染的 html 文件，js 加载后再替换）
+  - 运行时
+    - 对于展示性的数据，使用 Object.freeze 冻结对象，然后 vue 就不会递归该对象了。但如果要更新视图，只能整体替换该对象
+    - 优化无限列表（只渲染前后 5 屏）
+    - 减少无用 data，有些人直接用后端返回的数据作为 data
+    - keep-alive
+- react 性能优化
+  - shouldComponentUpdate
+  - Pure Component（纯组件）,渲染只取决于 state 和 props
+  - PureRenderMixin，官方插件，本质上是覆写 shouldComponentUpdate，然后对 state 和 props 进行浅比较，如果没变化返回 false
+  - 一些类 vue 的性能优化，比如 ssr、虚拟列表
+- react/vue key 的作用：方便 diff，以及复用列表 dom 
+- position跟display、overflow、float相互叠加：display属性规定元素应该生成的框的类型；position属性规定元素的定位类型；float属性是一种布局方式，定义元素在哪个方向浮动。类似于优先级机制：position：absolute/fixed优先级最高，有他们在时，float不起作用，display值需要调整。float 或者absolute定位的元素，只能是块元素或表格。
+- css 性能：精简选择器，内联关键 css，懒加载不重要的 css，更改样式时，避免重绘和重排
+- css3 动画性能：避免修改导致重排的属性，强制浏览器创建新的图层（translateZ(0)）
+- DOCTYPE 告诉浏览器使用哪个版本的HTML规范来渲染文档，标准模式（Standards mode）以浏览器支持的最高标准运行；混杂模式（Quirks mode）中页面是一种比较宽松的向后兼容的方式显示
+- v8 GC
+  - js 的垃圾回收由 v8 来代理，js 没有相关的 api 来管理内存，最多比如在 node 中通过 --expose-gc 参数来暴露主动 gc 的方法 gc()，或者在 chrome dev tools 中点击垃圾回收按钮
+  - v8 的垃圾回收时机通常由申请内存失败时触发，触发后先进行简单的 gc，再申请，如果再失败就会触发更彻底的 gc，再申请，如果还失败就报错
+  - 对于 nodejs，有 v8 管理的堆内内存、buffer 等由 Node 管理的堆外内存
+  - v8 将对内内存分为老生代、新生代，不同的内存空间具有不同的垃圾回收算法
+  - 新生代：任一时刻只有一半内存被使用，垃圾回收时，进行广度优先搜索，然后将存活的对象复制到另一半空间（空间换时间）
+  - 老生代：
+    - 包括大对象（超多 1M）、在新生代两次 gc 周期中未被回收的变量、编译后的机器码。
+    - 采用三色标记算法：白色代表可以回收，黑色代表不能回收，且它的引用都扫描完毕，灰色代表不能回收，但它的引用还没有扫描完毕。
+    - 首先将所有非根对象标记为白色，然后将根对象引用的对象标记为灰色，然后采用深度优先搜索，没完成一个对象的搜索，就把该对象标记为黑色，最后只剩黑色和白色。标记完成后就可以开始清理了，清理方式又分为两种，Sweeping、Compacting
+    - Sweeping：将死亡对象的占用的连续内存记录下来，用于未来的内存分配
+    - Compacting：将存活对象移动到另一个内存页，然后将原来的内存页交还给操作系统
+  - 优化：为了减小 gc 导致的程序暂停执行的时间。引入了增量式 gc，即执行一会儿 gc 就让程序执行一会儿；并行化，如果某些变量已经被标记为不可访问了，就可以不暂停程序执行，直接在后台 gc。
+- 
