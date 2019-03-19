@@ -98,10 +98,11 @@
   - GET比POST更不安全，因为参数直接暴露在URL上，所以不能用来传递敏感信息。
   - GET参数通过URL传递，POST放在Request body中。  
 - http缓存控制
-  - expired/cache-control（强缓存）：用两者设置缓存后，浏览器不会向服务请求；expired是服务器时间，客户端和服务端时间不一致，可能有问题；cache-control（max-age、no-cache）只有http 1.1支持。两者都存在，内容更新后，客户端资源得不到及时更新得问题
-  - last-modified/etag（弱缓存）：浏览器会向服务器确认资源是否过期，没有过期服务器返回304。但其实服务器无法精确确定last-modified时间，所以为资源分配一个id即etag；计算etag的hash有性能消耗。
-  - 另外 http1 还有各一个Pragma，可取值为 no-cache，可以禁止缓存
-  - 缓存优先级：强缓存 > 弱缓存，具体是pragma > cache-control > expired > last-modified = etag
+  - expires 和 Pragma 都是 http 1 的，Pragma可取值为 no-cache，可以禁止缓存
+  - expires/cache-control（强缓存）：用两者设置缓存后，浏览器不会向服务请求；expires（Expires: Wed, 21 Oct 2015 07:28:00 GMT）是服务器时间，客户端和服务端时间不一致，可能有问题；cache-control（max-age、no-cache）只有http 1.1支持。两者都存在，内容更新后，客户端资源得不到及时更新得问题
+  - 我看了下淘宝和腾讯的页面，都只设置了 cache-control: max-age=2592000,s-maxage=3600;,s-maxage 的意思是，代理服务器只缓存 1 小时
+  - last-modified/etag（弱缓存）：浏览器会向服务器确认资源是否过期，没有过期服务器返回304。但其实服务器无法精确确定last-modified（Last-Modified: Fri, 22 Jul 2016 01:47:00 GMT）时间，所以为资源分配一个id即etag；计算etag的hash有性能消耗。浏览器请求时，会带上 If-Modified-Since: Thu, 31 Mar 2016 07:07:52 GMT、If-None-Match：fsfsf，让服务端判断资源是否过期
+  - 缓存优先级：强缓存 > 弱缓存，具体是 pragma > cache-control > expired > last-modified = etag
   - cache-control 的值
     - public：任何情况都要缓存资源（即使需要http认证的资源）
     - no-store：不会缓存资源到内存、硬盘
@@ -145,9 +146,10 @@
   }, 1000)
   ```
 - 跨域
+  - 跨域：同源只域名相同、协议相同、端口相同，非同源即跨域。非同源的页面之间不能互相读cookie、localstorage、indexdb
   - script、link、img、video、iframe、@font-face等可以跨域
   - 存储在浏览器中的数据，如localStorage和IndexedDB，以源进行分割。每个源都拥有自己单独的存储空间，一个源中的Javascript脚本不能对属于其它源的数据进行读写操作。
-  -  Cookies 使用不同的源定义方式。一个页面可以为本域和任何父域设置cookie，只要是父域不是公共后缀（public suffix，比如.com, .co.uk and pvt.k12.ma.us，https://publicsuffix.org）即可。
+  - cookies 使用不同的源定义方式。一个页面可以为本域和任何父域设置cookie，只要是父域不是公共后缀（public suffix，比如.com, .co.uk and pvt.k12.ma.us，https://publicsuffix.org）即可
   - 使用cors解决跨域，且希望发送cookie时，浏览器、服务器都需要设置：
     ```bash
     # 浏览器
@@ -159,7 +161,15 @@
     ```
   - jsonp只能用于get请求，cors不支持ie10以下，jsonp只需要一次请求，cors多一次option请求（非简单请求时）。JSONP不是浏览器规范，服务端处理不当，有安全问题，并且jsonp的错误处理也不完善，只能监听script的onerror事件，但对于跨域的script error，浏览器不会给出详细的报错信息。
   - 解决：jsonp、cors、代理服务器、iframe postMessage、document.domain
-  - document.domain 设置修改为当前域它的上一级域。比如当前域名为photo.sina.cn，只能修改为 sina.cn，然后就可以向 sina.cn 发送请求了。
+  - document.domain 只能修改为当前域它的上一级域。比如当前域名为photo.sina.cn，只能修改为 sina.cn，然后就可以向 sina.cn 发送请求了。
+- cookie
+  - Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
+  - httpOnly：设置改标记后，js 无法访问该 cookie
+  - secure：设置改标记后，该 cookie 只会附带在 https 请求中发送到服务端
+  - 跨域共享
+    - 如果两个域一级域名相同，只是二级域名不同，可以设置 domain、path 实现共享：Set-Cookie: key=value; domain=.example.com; path=/
+    - 或者将 document.domain 设置为一级域名
+    - 针对完全不同的域名，内嵌跨域 url 的 iframe，通过父子页面通信传递 cookie。父子页面通信方式：1、通过修改 iframe url 的 hash，iframe 再监听 hash change 事件。2、修改 iframe 的 window.name，iframe 监听 name 变化。3、postMessage
 - http状态码：
   - 100：continue
   - 101：协议转换
@@ -420,7 +430,6 @@
 - bind方法绑定作用域后，再bind到不同的作用域，不会生效。因为console的方法在实现时已经bind过了，所以对console的方法执行bind不会生效
 - 解决js浮点数计算的问题：转换为整数计算
   - https://github.com/camsong/blog/issues/9
-- 跨域：同源只域名相同、协议相同、端口相同，非同源即跨域。非同源的页面之间不能互相读cookie、localstorage、indexdb，但是两个页面将document.domain设置为相同的域名，cookie可以互相访问
 - tcp粘包
   - 原因：tcp会用Nagle 算法缓存数据包，一起发送，以提到IO性能。多个包一起发送时，接受端可能先收到部分包1，再收到剩余包1+包2，或者先收到包1+部分包2，再收到剩余包2
   - 解决方式：禁用tcp的缓存算法、发一个包等一段时间、或进行封包/拆包（肯定是选择最后一种解决方式啊）
