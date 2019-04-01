@@ -108,6 +108,17 @@ declare module "*.scss" {
 }
 ```
 
+最后还剩一个问题，tsx 的标签中是不能写 styleName 属性的，因为 react 的声明文件中没有这个属性，所以需要利用 ts 的声明合并，帮助 react 声明：
+
+```typescript
+// types/react.d.ts
+declare namespace React {
+  interface HTMLAttributes<T> {
+    styleName?: string
+  }
+}
+```
+
 然后就可以愉快地搬砖啦：
 
 ```tsx
@@ -132,4 +143,11 @@ export default class Header extends React.Component {
     );
   }
 }
+```
+
+如果编译过程中报错 babel 兼容性问题，可以使用下列命令一键修复：
+
+```bash
+# https://github.com/babel/babel-upgrade/blob/master/readme.md
+npx babel-upgrade --write --install
 ```
