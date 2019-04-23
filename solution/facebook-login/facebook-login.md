@@ -69,26 +69,20 @@ https://graph.facebook.com/v3.2/me?
 
 ### 登出
 
-官方文档只是说退出时，由我们自己清除我们自己保存的用户登录标识，并没有说明如何清除 facebook 登录标识；如果不清除 facebook 的登录标识，用户再次登录时，在 facebook 的登录流程中会直接登录成功，不需要输入用户名、密码，给用户的感觉就是完全没有登出。
+因为我们的 app 是一个浏览器，在用户使用 facebook 账号登录我们的 app 后，在网页中打开 facebook 主页会直接登录；反之，如果用户先在网页中登录了 facebook 账号，然后在我们 app 的登录流程中也会直接登录（用户第一次登录时，facebook 会要求用户授权，之后都会直接登录）。
 
-解决上述问题的一个粗暴方式是直接清除 facebook 域名下的 cookie（https://facebook.com、https://m.facebook.com、https://staticxxx.facebook.com 下的 cookie 最好都清除了），因为我们的 app 是浏览器，这样做会导致用户使用我们的浏览器在网页中登录的 facebook 账户也登出了，因此我们不能使用这种方式。
+因此针对登出，取决于你期望的产品交互流程，分为两种情况：
 
-那要怎么登出呢？还有一种方式是，访问如下的 url 也能能够登出：
+1. 退出你的产品，但不退出 facebook
+2. 同时退出 facebook 和你的产品
 
-```bash
-https://www.facebook.com/logout.php?
-  access_token={token}
-  next={redirect-url}
-```
+官方期望的是，你自己保存用户是否登出你的应用的标识，然后用户退出时，只退出你的应用，不要退出 facebook；比如，用户登出后，再次进入个人信息等需要登录才能查看的页面，你判断到用户已经登出，因此引导用户到登录页，然后用户点击使用 facebook 登录的按钮，用户就直接登录了（不会出现用户名、密码输入界面，因为用户没有登出 facebook，并且已经授权过你的应用了）
 
-参数意义：
+但对于我们的浏览器产品来说，首先我们暂时还没有保存用户的登录标识（完全依赖 facebook 了标识，并且由于早期的设计不合理，登录界面是原生的，webview 中不能控制登录界面），如果只登出我们的应用，不登出 facebook，用户再次登录时，会用上次的登录账号直接登录，导致用户无法切换账号；并且直接登录的交互，会给用户造成没有登出的假象。因此我们采用了第二种方案。
 
-- access_token：上面步骤中获取到的 token
-- next：必须是我们在上面配置的 `有效 OAuth 跳转 URI`
+#### 第一种方案
 
-通过上述的方式其实和清除 cookie 的方式差不多，仍然会导致用户在其它网页中登录的 facebook 账号登出。
-
-经过各种搜索，都没有找到合适的方式，只能借助于 facebook 的网页 sdk 了。最开始我们不想引入 sdk，我们只需要模拟 sdk 的行为就行了；但在查看 sdk 的源码以及登出时的请求后，发现要模拟非常麻烦，而且各种参数易于出错，鉴于 facebook 的网页 sdk 只有 1.9 KB，引入 sdk 完全可以接受，我们就直接使用这个 sdk 好了。
+其实第一种方案，官方并没有提供直接的 api，我们经过各种搜索，都没有找到合适的方式，只能借助于 facebook 的网页 sdk 了。最开始我们不想引入 sdk，我们只需要模拟 sdk 的行为就行了；但在查看 sdk 的源码以及登出时的请求后，发现要模拟非常麻烦，而且各种参数易于出错，鉴于 facebook 的网页 sdk 只有 1.9 KB，引入 sdk 完全可以接受，我们就直接使用这个 sdk 好了。
 
 代码如下：
 
@@ -126,3 +120,49 @@ https://www.facebook.com/logout.php?
 
 - 调用 `FB.logout` 会报错 `Refused to display 'https://www.facebook.com/home.php' in a frame because it set 'X-Frame-Options' to 'deny'`，需要在 `app 控制面板 设置 > 基本 > 添加平台 > 网站` 中添加执行 `FB.logout` 方法的域名才能退出。
 - 不能在 `localhost` 域名下调用 `FB.logout` ，否则刷新页面后，用户仍旧是登录状态。你可以本地绑定 host，然后换一个域名测试即可。
+
+#### 第二种方案
+
+第二种方案相对来说容易一些。一种简单的方式是访问如下的 url 就能够登出：
+
+```bash
+https://www.facebook.com/logout.php?
+  access_token={token}
+  next={redirect-url}
+```
+
+参数意义：
+
+- access_token：上面步骤中获取到的 token
+- next：必须是我们在上面配置的 `有效 OAuth 跳转 URI`
+
+如果你不想再次打开一个 webview 访问上面的 url，你也可以直接操作 cookie，需要注意，facebook 在很多子域下都种有 cookie（包括 https://facebook.com、https://m.facebook.com、https://staticxxx.facebook.com），我们发现强行使这些域名下的 cookie 过期并不生效。最后发现了官方的处理方式，从而实现登出：
+
+```bash
+set-cookie: c_user=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=-1555934745; path=/; domain=.facebook.com
+set-cookie: xs=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=-1555934745; path=/; domain=.facebook.com; httponly
+set-cookie: spin=deleted; expires=Thu, 01-Jan-1970 00:00:01 GMT; Max-Age=-1555934745; path=/; domain=.facebook.com; httponly
+```
+
+### 补充
+
+其实 Google 账号的登录流程差不多，因为 facebook 和 google 都是采用的 OAuth 2.0 标准。
+
+针对 google 的登出，也有三种方式：
+
+1. 使用官方 [sdk](https://developers.google.com/identity/sign-in/web/)
+2. 访问 url：https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=redirect_url
+3. 清除 cookie
+
+第一种方式和 facebook 一样，只能退出你的应用，不能退出 google。第二种方式的问题是，在跳转到你的 redirect_url 之前需要用户再次确认，交互上会多一步，并且如果用户拒绝跳转到你的 redirect_url，相当于你拿不到登出成功的通知。第三种方式也和 facebook 类似，不过操作 cookie 的方式不同：
+
+```bash
+set-cookie: SID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: HSID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: SSID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: APISID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: SAPISID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: LSID=EXPIRED; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/; Secure
+set-cookie: TAID=EXPIRED; Domain=.google.com; Expires=Tue, 26-Jul-2016 12:09:29 GMT; Path=/ads/measurement; Secure
+set-cookie: SIDCC=EXPIRED; expires=Mon, 01-Jan-1990 00:00:00 GMT; path=/; domain=.google.com; priority=high
+```
