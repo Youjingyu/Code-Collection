@@ -6,6 +6,8 @@
 
 ### 创建 app 并配置重定向 url
 
+在开始之前，我们创建 app 并配置重定向 url。
+
 facebook 支持多种环境下的登录方式，不管哪种方式都需要我们有一个 facebook 账号，facebook 账号注册流程就不赘述了，注册好账号后，在[应用面板](https://developers.facebook.com/apps)中创建一个 app，注意，app 的名字会在认证时展示给用户，所以一定要取一个正式的名字。
 
 创建 app 后，我们点击[应用面板](https://developers.facebook.com/apps)中的 app 进入控制面板，然后在 `添加产品` 部分设置 `facebook 登录`，我们只需要设置 `有效 OAuth 跳转 URI` 就行了，其它配置你可以视情况自行配置，在开发阶段，为了方便调试，你可以将跳转 URI 设置为本地地址，比如 `https:localhost:8080`，注意就算是本地地址，也必须是 https 地址。
