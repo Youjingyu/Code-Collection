@@ -1,3 +1,53 @@
+- mac 下 mysql 服务操作
+```bash
+# 启动
+mysql.server start
+# 停止
+mysql.server stop
+# 重启
+mysql.server restart
+```
+
+- mysql 连接
+
+```bash
+# 创建用户，host 如果为 %，则通配所有域名
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+# 例子：
+CREATE USER 'pig'@'192.168.1.101_' IDENDIFIED BY '123456';
+CREATE USER 'pig'@'%' IDENTIFIED BY '123456';
+
+# 授权，privileges 包括 SELECT，INSERT，UPDATE，ALL 等
+GRANT privileges ON databasename.tablename TO 'username'@'host'
+# 列子
+GRANT SELECT, INSERT ON test.user TO 'pig'@'%';
+GRANT ALL ON *.* TO 'pig'@'%';
+
+# 刷新权限
+flush privileges;
+
+# 使创建的用户能够对其他用户授权
+GRANT privileges ON databasename.tablename TO 'username'@'host' WITH GRANT OPTION;
+# 设置与更改用户密码
+SET PASSWORD FOR 'username'@'host' = PASSWORD('newpassword');
+# 删除用户
+DROP USER 'username'@'host';
+
+# 添加非删除权限
+GRANT CREATE,INDEX,SELECT,INSERT,UPDATE,CREATE VIEW,SHOW VIEW,ALTER ROUTINE,CREATE ROUTINE,EXECUTE,CREATE TEMPORARY TABLES ON *.* TO 'developer'@'%';
+
+# 删除权限
+
+# 显示权限
+SHOW GRANTS FOR 'developer'@'%';
+
+# 显示所有用户
+select User from mysql.user;
+
+# 报错 ER_NOT_SUPPORTED_AUTH_MODE: Client does not support authentication protocol requested by server; consider upgrading MySQL client
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456789';
+```
+
 - 自增id被搞混乱过后，还原为自增id
 ```bash
 # 删除原有主键id
