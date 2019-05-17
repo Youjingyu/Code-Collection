@@ -53,3 +53,10 @@ firewall-cmd --zone=public --add-port=80/tcp --permanent
 firewall-cmd --zone=public --add-port=443 /tcp --permanent
 firewall-cmd --reload
 ```
+- crontab 规则
+```bash
+# 每 10 小时一次
+# 注意，由于 crontab 的计算周期是一天
+# 所以，比如现在的事件时 16:00:00，接下来触发定时器的时间是 00:00:00、10:00:00、20:00:00、00:00:00...
+0 */10 * * *
+```
