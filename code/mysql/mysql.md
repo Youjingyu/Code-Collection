@@ -17,8 +17,8 @@ CREATE USER 'username'@'host' IDENTIFIED BY 'password';
 CREATE USER 'pig'@'192.168.1.101_' IDENDIFIED BY '123456';
 CREATE USER 'pig'@'%' IDENTIFIED BY '123456';
 
-# 授权，privileges 包括 SELECT，INSERT，UPDATE，ALL 等
-GRANT privileges ON databasename.tablename TO 'username'@'host'
+# 授权，privileges 包括 SELECT，INSERT，UPDATE，ALL 等，这个授权操作会创建一个用户
+GRANT privileges ON databasename.tablename TO 'username'@'host' identified by 'password';
 # 列子
 GRANT SELECT, INSERT ON test.user TO 'pig'@'%';
 GRANT ALL ON *.* TO 'pig'@'%';
@@ -27,7 +27,7 @@ GRANT ALL ON *.* TO 'pig'@'%';
 flush privileges;
 
 # 使创建的用户能够对其他用户授权
-GRANT privileges ON databasename.tablename TO 'username'@'host' WITH GRANT OPTION;
+GRANT privileges ON databasename.tablename TO 'username'@'host' identified by 'password' WITH GRANT OPTION;
 # 设置与更改用户密码
 SET PASSWORD FOR 'username'@'host' = PASSWORD('newpassword');
 # 删除用户
@@ -92,6 +92,10 @@ ALTER TABLE table1 ADD INDEX ip_index(ip), ADD INDEX fp_index(fp), ADD INDEX vid
 create table table12 like table1;
 insert into table12 select * from table1;
 ```
+- 从另一个表插入数据
+``` bash
+insert into t_nations_info (sCode, sCNName, sENName, sRegion) select code,zh_name,en_name,region from t_r_country_info_list t  where code in ('KE') ON DUPLICATE KEY UPDATE sRegion=t.region;
+```
 - 新建列
 ```bash
 ALTER TABLE table1 ADD isoverwrite int(8) DEFAULT 0 NULL;
@@ -111,4 +115,39 @@ LOAD DATA LOCAL INFILE "D:/user-unique/20180125data/c_20180125.txt"  REPLACE  IN
 select count(*) from 
 (select * from table1 union all select * table2) x 
 where isgen=1 group by x.vid;
+```
+
+- 查询昨天的数据
+```bash
+select * from table_name where DATE(insert_time) = CURDATE()-1;
+```
+
+- 编码查看与配置
+```bash
+# 查看数据库编码
+show variables like '%char%';
+status;
+# 查看 table 编码
+show create table <表名>;
+# 查看字段编码
+show full columns from <表名>;
+# 设置数据库编码
+alter database <数据库名> character set utf8mb4;
+# 设置表编码
+alter table <表名> character set utf8mb4;
+# 设置字段编码
+ALTER TABLE <表名> MODIFY COLUMN <字段名> <字段类型> CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+- 修改字段
+```bash
+# 修改字段名以及数据类型
+ALTER  TABLE 表名 CHANGE 旧字段名 新字段名 新数据类型;
+# 修改字段数据类型
+ALTER  TABLE 表名 MODIFY COLUMN 字段名 新数据类型 新类型长度  新默认值
+```
+
+- 移动表到另一个数据库
+```bash
+alter table database.table rename database1.table
 ```
