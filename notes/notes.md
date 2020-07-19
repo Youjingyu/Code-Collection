@@ -977,4 +977,122 @@
     - Sweeping：将死亡对象的占用的连续内存记录下来，用于未来的内存分配
     - Compacting：将存活对象移动到另一个内存页，然后将原来的内存页交还给操作系统
   - 优化：为了减小 gc 导致的程序暂停执行的时间。引入了增量式 gc，即执行一会儿 gc 就让程序执行一会儿；并行化，如果某些变量已经被标记为不可访问了，就可以不暂停程序执行，直接在后台 gc。
-- 
+- babel 将 generator 转义到 es5 的实现原理
+babel 将 yield 语句拆分为一个个状态机，然后通过状态判断要执行哪部分代码，并通过一个 wrapper 函数包装这部分逻辑，不停地迭代执行这部分逻辑。
+async/await 底层基于 generator 和 promise，generator 控制暂停，promise.then 后执行 generator.next()
+```javascript
+// https://blog.rexskz.info/how-babel-transform-async-await-to-es5.html
+
+// 定义一个迭代执行 generator 的辅助函数
+function simpleCo(gen) {
+    const g = gen();
+    function next(data) {
+        const result = g.next(data);
+        if (result.done) {
+            return result.value;
+        }
+        return result.value.then(function (data) {
+            return next(data);
+        });
+    }
+    return next();
+}
+
+function t(xxx) {
+  const x = await someFunction(xxx);
+  const y = await fallback(x);
+  for (let i = 0; i < 5; i++) {
+      await anotherFunction(i);
+  }
+  return y;
+}
+
+// 转换为 yield
+function t(xxx) {
+  const x = await someFunction(xxx);
+  const y = x ? x + 1 : await fallback(x);
+  for (let i = 0; i < 5; i++) {
+      await anotherFunction(i);
+  }
+  return y;
+}
+function* _t(xxx) {
+  const x = yield someFunction(xxx);
+  const y = x ? x + 1 : yield fallback(x);
+  for (let i = 0; i < 5; i++) {
+      yield anotherFunction(i);
+  }
+  return y;
+}
+const t = simpleCo(_t)
+
+// 转化为 es5
+function _t2(ctx) {
+  // 将用到的变量提出来
+  var _x = 0, _y = 0, _i = 0
+  var state = 'START'
+  var done = false
+  var returnValue = undefined
+  function stop(val) {
+      done = true
+      returnValue = val
+  }
+  function _t(xxx) {
+      while (1) {
+        // 将每一个 if/else、循环等转为对应的 state
+        // 拆分出的语句 通过 1、2、3、4...等数字控制
+        // 然后通过 state 的变换执行对应的部分
+        switch (state) {
+            case 'START':
+                state = 1
+                return someFunction(xxx)
+            case 1:
+                _x = ctx.lastReturnedValue
+                if (!_x) {
+                    state = 'ELSE'
+                    break
+                }
+                temp = _x + 1
+                state = 'AFTERIF'
+                break
+            // if/else 状态
+            case 'ELSE':
+                state = 3
+                return fallback(x)
+            // 赋值语句
+            case 3:
+                temp = ctx.lastReturnedValue
+            case 'AFTERIF':
+                _y = temp
+                _i = 0
+            // 循环
+            case 'WHILE':
+                if (!(_i < 5)) {
+                    state = 'ENDWHILE'
+                    break
+                }
+                state = 6
+                return anotherFunction(_i)
+            case 6:
+                _i++
+                state = 'WHILE'
+                break
+            case 'ENDWHILE':
+                return stop(_y)
+        }
+      }
+  }
+  return {
+      next() {
+          return done ? {
+              value: returnValue,
+              done: true
+          } : {
+              value: _t(),
+              done: false
+          }
+      }
+  }
+}
+t = simpleCo(_t2)
+```
