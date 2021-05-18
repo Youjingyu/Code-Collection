@@ -11,6 +11,6 @@
   "devDependencies": {
     "rollup": "^1.2.0",
     "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-serve": "^1.0.1"
+    "rollup-plugin-serve": "^1.0.2"
   }
 }
