@@ -1,3 +1,4 @@
+// 快排
 // 快排必须要用到递归，采用分而治之的思路
 // 选择一个基准值（通常选最中间的值，一定概率上可以降低复杂度）
 // 声明两个数组 less、greater，比基准值大的放入 greater，小的放入 less
@@ -14,14 +15,18 @@
 // 空间复杂度 O(log n)
 function quickSort (arr) {
   if (arr.length < 2) return arr
-  const pivot = arr[Math.floor(arr.length / 2)]
+  const midIndex = Math.floor(arr.length / 2)
+  const mid = arr[midIndex]
+  // 需要从数组中移除元素，因为下面的大小写判断是用的 else
+  // 不移除的话，该元素会重复进入数组
+  arr.splice(midIndex, 1)
   const less = []
   const greater = []
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] <= pivot) less.push(arr[i])
-    if (arr[i] > pivot) greater.push(arr[i])
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < mid) less.push(arr[i])
+    else greater.push(arr[i])
   }
-  return [].concat(quickSort(less), pivot, quickSort(greater))
+  return quickSort(less).concat([mid], quickSort(greater))
 }
 
 console.log(quickSort([2, 9, 0, 40, 50, 29, 12, 15, 10]))

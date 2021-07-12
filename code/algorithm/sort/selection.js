@@ -1,7 +1,8 @@
+// 选择排序
 // 挑出后续最小的元素，放到最前面
 // 时间复杂度：平均o(n^2) 最差o(n^2) 最好o(n^2)
 // 空间复杂度：o(1)
-function selectoin1 (arr) {
+function selectoin1 (arr) {w
   const len = arr.length
   for (let i = 0; i < len; i++) {
     // 关键：记住最小元素的index，而不是值

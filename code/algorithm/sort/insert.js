@@ -1,3 +1,4 @@
+// 插入排序
 // 第一个元素视为已排序数组，选出后面的第一个元素插入已排序数组
 function insert (arr) {
   const len = arr.length
