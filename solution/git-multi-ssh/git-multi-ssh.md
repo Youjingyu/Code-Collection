@@ -1,7 +1,8 @@
 - git多个ssh
 ```bash
-ssh-keygen -t rsa -C "github邮箱"
-ssh-keygen -t rsa -C "公司gitlab邮箱"
+ssh-keygen -t rsa -C "github 账号"
+ssh-keygen -t rsa -C "公司 gitlab 账号"
+# 记得在交互式行中输入生成的密匙文件的名字（包含完整路径）
 ```
 生成密匙，不要输入密码，否则每次pull、push都需要密码
 ```bash

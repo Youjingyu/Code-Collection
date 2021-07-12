@@ -36,6 +36,9 @@ DROP USER 'username'@'host';
 # 添加非删除权限
 GRANT CREATE,INDEX,SELECT,INSERT,UPDATE,CREATE VIEW,SHOW VIEW,ALTER ROUTINE,CREATE ROUTINE,EXECUTE,CREATE TEMPORARY TABLES ON *.* TO 'developer'@'%';
 
+# 取消权限
+Revoke SELECT,INSERT,UPDATE *.* from 'developer'@'%';
+
 # 删除权限
 
 # 显示权限
@@ -145,6 +148,8 @@ ALTER TABLE <表名> MODIFY COLUMN <字段名> <字段类型> CHARACTER SET utf8
 ALTER  TABLE 表名 CHANGE 旧字段名 新字段名 新数据类型;
 # 修改字段数据类型
 ALTER  TABLE 表名 MODIFY COLUMN 字段名 新数据类型 新类型长度  新默认值
+# 修改表的默认字符集和所有列的字符集
+ALTER TABLE table_name CONVERT TO CHARACTER SET character_name
 ```
 
 - 移动表到另一个数据库
@@ -163,4 +168,7 @@ full outer join: 合并两个表的内容
 select * from tableA A left join tableB B on A.key=B.key where B.key is null
 # 取出 A + B，排除 A、B 的交集
 select * from tableA A full outer join tableB B on A.key=B.key where B.key is null and A.key is null
+
+- 根据一个表的一列更新另一个表的一列
+update t_push_info t1 inner join t_push_rule_config  t2 on t1.push_rule=t2.iRuleId set t1.push_rule_config_id=concat('rule_pushRule_', t2.id)
 ```

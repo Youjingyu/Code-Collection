@@ -1096,3 +1096,43 @@ function _t2(ctx) {
 }
 t = simpleCo(_t2)
 ```
+
+-v8 实现 async/await 可以理解为
+```js
+// https://zhuanlan.zhihu.com/p/53944576
+// 原来的代码
+async function foo (v) {
+  const w = await v
+  return w;
+}
+// v8 会转为
+function foo2(v) {
+  const implicit_promise = new Promise(resolve => {
+    const promise = new Promise(res => res(v));
+    promise.then(w => resolve(w));
+  });
+
+  return implicit_promise;
+}
+// 思路上一致，但 v8 内部实现是基于字节码的，字节码会在 await 处暂停执行
+```
+
+- 浏览器架构（chrome）：多进程架构，chrome 会根据机器的性能情况，决定多页面的 Renderer Process 是否复用，Browser Process 是否需要拆分到多个进程等；chrome 67过后，iframe 也会使用单独的进程来渲染。需要说明的，下面的浏览器进程、线程划分，并不绝对，在不性能的机器上会有不同的进程、线程拆分或合并，但浏览器的模块划分和下面相同
+  - Browser Process：负责书签、地址栏、网络请求（render process 不负责网络）、文件操作。包含 ui线程、网络线程、文件访问线程等
+  - Renderer Process：负责网页内的所有事项，包括 html、css 的解析渲染，js 的执行。包括一个主线程，负责 html、css、js 的解析执行；排版（compositor）线程；光栅（raster）线程；多个工作线程，运行 web worker、service worker、worklet；内部线程，blink、v8 内部使用，用于处理 web audio、数据库、gc 等
+  - Plugin Process：负责浏览器插件
+  - GPU Process：负责 gpu 相关事项
+- 在浏览器中输入 url 的流程：浏览器进程中的 ui 线程监听到用户输入，ui 线程通知网络线程进行资源的加载，如果响应的是 html，网络线程会告知 ui 线程数据已准备好，ui 线程会查找一个渲染进程进行渲染。
+- 浏览器渲染流程：
+  - 整个渲染过程涉及到：dom 树 -> 渲染树 -> 图层树
+  - 主线程解析 html 生成 dom
+  - 如果遇到需要加载的网络资源，会通知浏览器进程中的网络线程，进行资源的加载，如果遇到 js，主线程会停止解析 html，并解析执行 js；
+  - 主线程基于 css 生成页面样式，然后结合 dom 生成渲染树，然后主线程遍历渲染树，创建绘制记录，从而确定元素的渲染先后顺序；
+  - 合成帧：chrome 会将页面分成不同的层，每一层单独栅格化，随后组合为合成帧，不同层的合成由合成器（compositor）线程完成。主线程会遍历渲染树，生成图层树，具有 css will-change 属性的元素会被单独看做一层。然后主线程将这些信息传递给合成器线程，合成器线程会栅格化每一层，如果某一层的面积很大，合成器会将该层分块栅格化，然后通过栅格化结果创建合成帧，并传递给浏览器进程，交给 gpu 渲染
+- 浏览器事件处理：操作系统将用户的行为告知浏览器进程，浏览器进程将事件类型、坐标传递给渲染进程，渲染进程根据坐标找到对应的元素，派发事件
+- 浏览器本身不具备渲染像素的能力，需要借助系统的GUI Toolkit，一般来说浏览器会将一个要显示的网页包装成一个 UI 组件，通常叫做 WebView，然后通过将 WebView 放置于应用的 UI 界面上，从而将网页显示在屏幕上。
+- 一些GUI Toolkit，比如 android 的默认 ui 组件没有独立的位图缓存，比如每次用户滚动，都需要重新绘制整个 webview，因此webview需要做一层自己的缓存，因此 webview 的绘制会分成两步：1、根据需要更新内部缓存，将网页内容绘制到内部缓存里面（光栅(raster)化）,它将一些绘图指令转换成真正的像素颜色 2、 将内部缓存拷贝到窗口缓存上（合成(composite)），它负责缓存的拷贝，同时还可能包括位移、旋转、缩放等
+- 浏览器滚动、css 动画，都不需要等待主线程（js）的响应，浏览器合成器线程就可以自行决定如何渲染，但如果页面添加的 scroll 事件的监听，在渲染之前，浏览器需要等待主线程响应
+
+- react 
+https://juejin.cn/post/6844904200824946696#heading-39
